@@ -1,2 +1,2 @@
-//test commit 2
+//vs code에서 커밋하기
 console.log('test');
