@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>고양이 가라사대</title>
+</head>
+<style>
+  body {
+    text-align: center;
+  }
+
+  .main-card button {
+    position: relative;
+    left: -45px;
+    bottom: 15px;
+  }
+
+  .favorites {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  /* .favorites img {
+    width: 150px;
+  } */
+</style>
+
+<body>
+  <div id="app"></div>
+
+ 
+  <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+    console.log("야옹");
+
+
+    const Title = (props) => {
+      console.log(props);
+      return(
+        <h1>{props.children}</h1>
+      )
+    }
+ //{} 삭제 후 바로 () 를 바로 쓰면 return 해주는 효과
+    const Form = () => {
+      const [counter, setCounter] = React.useState(1);
+      // const counter = counterState[0];
+      // const setCounter = counterState[1];
+
+      console.log("카운터" , counter);
+
+      function handelFormSubmit(event){
+        event.preventDefault();
+        console.log("폼 전송됨");
+        setCounter(counter + 1);
+      }
+      
+      return(
+        <form onSubmit={handelFormSubmit}>
+          <input type="text" name="name" placeholder="영어 대사를 입력해주세요" />
+          <button type="submit">생성</button>
+        </form>
+      );
+    };
+
+
+
+    function CatItem(props){
+      // console.log(something);
+      return (
+        <li>
+          <img src={props.img} style={{width: "150px", border: '2px solid red'}}/>
+        </li>
+      )
+    }
+
+    function Favorites(){
+      return(
+        <ul className="favorites">
+        <CatItem img="https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn" title="cat1"/>
+        <CatItem img="https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript"/>
+      </ul>
+      )
+    }
+
+    //before 디스트럭처링 문법 전 {/*주석내용*/}
+    {/*
+    const Maincard = (props) => { 
+      return (
+        <div class="main-card">
+          <img src={props.mainImg}/>  //
+          <button>🤍</button>
+        </div>
+      )
+    };
+    */}
+
+    //after 디스트럭처링 문법 후
+     const Maincard = ({mainImg}) => { 
+       function handleHeartClick(){
+         console.log("하트 눌렀음");
+       }
+       function handleHeartMouseOver(){
+         console.log("하트 스쳐지나감");
+       }
+       return (
+         <div className="main-card">
+           <img src={mainImg}/>
+           <button onClick={handleHeartClick}
+           onMouseOver={handleHeartMouseOver}
+           >🤍</button>
+         </div>
+       )
+     };
+  
+
+    const app = (
+      <div>
+        <Title>1번째 고양이 가라사대</Title>
+        <Title>2번째 고양이 가라사대</Title>
+        <Title>3번째 고양이 가라사대</Title>
+
+        <Form/>
+        <Maincard mainImg="https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript"/>
+        <Favorites/>
+      </div>
+    )
+
+    const 여기그려 = document.querySelector('#app');
+
+    ReactDOM.render(app, 여기그려);
+
+  </script>
+</body>
+
+</html>
