@@ -1,0 +1,52 @@
+5/3 스터디
+
+ES6 = React나 Vue에서 자주 쓰이는 문법 
+https://velog.io/@kimhscom/JavaScript-자주-사용하는-ES6-문법-정리
+
+[ES6]
+* var보다 강력한 const변수를 씀 *
+
+// ES5
+var MyBtn = document.getElementById('mybtn');
+// ES6
+const MyBtn = document.getElementById('mybtn');
+
+
+* 코드를 더 읽기 쉽게 하는 화살표 함수를 사용*
+// ES5
+function myFunc(name) {
+	return '안녕' + name;
+}
+console.log(myFunc('영희'));
+// 출력 => 안녕 영희
+
+
+// ES6 화살표 함수
+const myFunc = (name) => {
+	return `안녕 ${name}`;
+}
+console.log(myFunc('영희')); // 출력 => 안녕 영희
+
+
+리액트 시작하기
+
+1. 불러올 id값을 넣은 div를 추가하기
+<div id="app"></div>
+
+2. </body>태그 앞에 리액트 스크립트 추가
+<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+
+3. Babel 스크립트 추가하기
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+Babel = 새로운 자바스크립트 문법을 위해 브라우저가 이해할수 있는 자바스크립트로 변환해주는것
+
+{}안에 넣으면 자바스크립트 문법을 쓸수 있음
+리액트 그릴때는 최상위 태그가 하나여야함
+
+리액트 개발 = 컴포넌트 개발
+
+리액트 스타일링 : https://emotion.sh/docs/introduction
+
+
+
