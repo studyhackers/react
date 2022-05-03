@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>고양이 가라사대</title>
+</head>
+<style>
+   body{text-align: center;}
+   .main-card button{position: relative;left:-45px; bottom:15px;}
+   .favorites{list-style: none;display: flex;justify-content: center;flex-wrap: wrap;gap:15px;}
+</style>
+<body>
+   <div id="app"></div>
+ 
+   <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+   <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+   <script type="text/babel">
+       console.log("야옹");
+      
+       //자바스크립트로 작업시
+       // const likeButton = document.querySelector(".main-card button");
+       // likeButton.addEventListener("click", function(){
+       //     likeButton.innerHTML = "?";
+       //     const favorites = document.querySelector(".favorites");
+       //     const newFavoriteImage = document.createElement("img");
+       //     newFavoriteImage.src = "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
+       //     const li = document.createElement("li");
+       //     li.appendChild(newFavoriteImage);
+       //     favorites.appendChild(li);
+       // });
+ 
+ 
+       //리액트
+       const Tit = (props) => {
+           return(
+               <h1>{props.children}</h1>
+           );
+       }
+      
+ 
+       //component-무조건 대문자로 시작 // useState
+       const Form = () => {
+           const [counter, setCounter] = React.useState(1);
+           // const counterState = React.useState(1);
+           // const counter = counterState[0];
+           // const setCounter = counterState[1];
+ 
+           console.log("카운터",counter)
+ 
+           function handleFormSubmit(e){
+               e.preventDefault();
+               console.log("폼 전송됨");
+               setCounter(counter + 1);
+           }
+      
+       return(
+           <form onSubmit={handleFormSubmit}>
+               <input type="text" name="name" placeholder="영어 대사를 입력해주세요"/>
+               <button type="submit">생성</button>
+           </form>
+           );
+       };
+ 
+       function CatItem(props){ //react에서 인자를 넘겨준 것: props
+           return(
+               <li>
+                   <img src={props.img} style={{width:"150px"}}/>
+               </li>
+           );
+       }
+ 
+       function Favorites(){
+           return(
+               //react에서는 className이라는 프로퍼티사용
+               <ul className="favorites">
+                   <CatItem img="https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn"/>
+                   <CatItem img="https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript"/>
+               </ul>
+           );  
+       }
+ 
+       const MainCard = ({img}) => {
+           function handleHeartClick(){
+               console.log("하트 눌렀음");
+           }
+ 
+           function handleHeartMouseOver(){
+               console.log("하트 스쳐지나감");
+           }
+           return(
+               <div className="main-card">
+                   <img src={img} alt="고양이" width="400" />
+                   <button
+                   onClick={handleHeartClick}
+                   onMouseOver={handleHeartMouseOver}>?</button>
+               </div>
+           );
+       }
+ 
+       const app = (
+           <div>
+               <Tit>1번째 고양이 가라사대</Tit>
+               <Form />
+               <MainCard img="https://cataas.com/cat/60b73094e04e18001194a309/says/react"/>
+               <Favorites />
+           </div>
+       );
+ 
+       const 여기다가그려 = document.querySelector('#app');
+ 
+       ReactDOM.render(app, 여기다가그려)
+ 
+       //자바스크림트 문법을 리액트 안에서 사용하려면 중괄호{} 사용하면됨
+       //중괄호 안에는 변수말고도 다른 자바스크립트도 사용 가능 : 1+2 = 3
+       //중괄호 안에는 리액트변수 말고도 다른 변수들도 담을 수 있음 , 삼항연산자도 가능, 표현식
+       //리액트에 그릴 수 있는 건 최상위 태그 하나여야함, 두개일 시 오류 --> 최상위 태그가 하나가 되도록 <div>나 다른 태그로 묶어주면 됨
+ 
+       //useState
+       //
+   </script>
+</body>
+</html>
