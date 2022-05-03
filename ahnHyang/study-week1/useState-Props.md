@@ -9,8 +9,8 @@
 
 ## React 컴포넌트의 데이터 종류
 
-- ## <h3>state</h3>
-- ## <h3>props</h3>
+- <h3>state</h3>
+- <h3>props</h3>
 
 <br/>
 ## State
