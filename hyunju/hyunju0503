@@ -11,6 +11,8 @@ var MyBtn = document.getElementById('mybtn');
 // ES6
 const MyBtn = document.getElementById('mybtn');
 
+console.log(1111);
+
 
 * 코드를 더 읽기 쉽게 하는 화살표 함수를 사용*
 // ES5
