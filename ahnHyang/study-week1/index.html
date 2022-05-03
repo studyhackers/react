@@ -4,116 +4,130 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>고양이 가라사대</title>
+    <title>Study 1 day 복습</title>
   </head>
   <style>
-    body {
-      text-align: center;
-    }
-    .main-card button {
-      position: relative;
-      left: -45px;
-      bottom: 15px;
-    }
-    .favorites {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
+    body {text-align: center;}
+    ul{list-style: none;padding: 0;}
+    h2{height: 15px;line-height: 15px;}
+    .login_wrap{width: 300px;height: 300px;border: 1px solid #ccc; border-radius: 10px;text-align: center;padding: 0 3%;box-sizing: border-box;}
+    .login_info{width: 100%;}
+    .login_info li{height: 35px;line-height: 35px;}
+    .login_info li > input{width: 100%; height: 100%;box-sizing: border-box;border: 1px solid #ccc;text-indent: 10px;}
+    .btn_box {height: 50px;line-height: 50px;}
+    .btn_box button{width: 100%;height: 100%;box-sizing: border-box;background: cornflowerblue;color: #fff;font-weight: bold;border: 0;cursor: pointer;}
   </style>
   <body>
-    <div id="app"></div>
 
-    <script
-      src="https://unpkg.com/react@17/umd/react.development.js"
-      crossorigin
-    ></script>
-    <script
-      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
-      crossorigin
-    ></script>
+    <div id="App">
+        <!-- <div class="login_wrap">
+            <h3>리액트 기초 1주차 복습</h3>
+            <form id="fm" onsubmit="return loginGo();">
+                <ul class="login_info">
+                    <li>아이디</li>
+                    <li><input type="text" id="user_id"></li>
+                    <li>비밀번호</li>
+                    <li><input type="password" id="user_pass"></li>
+                </ul>
+                <div class="btn_box">
+                    <button type="submit" id="login_btn">로그인</button>
+                </div>
+            </form>
+        </div> -->
+    </div>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <!-- 바벨은 자바스크립트 es6 문법을 es5로 변환해주는 트렌스파일러(transpiler), 이것을 통해 React를 일반 브라우저에서 실행시킬 수 있다. -->
     <script type="text/babel">
-      console.log("야옹");
 
-      const Title = (props) => {
-        return <h1>{props.children}</h1>;
-      };
-
-      const Form = () => {
-        const [counter, setCounter] = React.useState(1);
-
-        console.log("카운터", counter);
-
-        function handleFormSubmit(event) {
-          event.preventDefault();
-          console.log("폼 전송됨");
-          setCounter(counter + 1);
+        /* 리액트 */
+        const Title = (props) => {
+            return <h3>{props.children}</h3>;
         }
+        // 부모 컴포넌트에서 전달받은 데이터 h3태그에 출력되게 하는 자식 컴포넌트
+        //children: A 컴포넌트 사이에 B 컴포넌트가 있을 때, A 컴포넌트에서 B 컴포넌트 내용을 보여주려고 사용하는 props입니다.
 
-        return (
-          <form onSubmit={handleFormSubmit}>
-            <input
-              type="text"
-              name="name"
-              placeholder="영어 대사를 입력해주세요"
-            />
-            <button type="submit">생성</button>
-          </form>
-        );
-      };
-
-      function CatItem(props) {
-        return (
-          <li>
-            <img src={props.img} style={{ width: "150px" }} />
-          </li>
-        );
-      }
-
-      function Favorites() {
-        return (
-          <ul className="favorites">
-            <CatItem img="https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn" />
-            <CatItem img="https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript" />
-          </ul>
-        );
-      }
-
-      const MainCard = ({ img }) => {
-        function handleHeartClick() {
-          console.log("하트 눌렀음");
+        function Login_info(){
+            return (
+                <ul className="login_info">
+                    <li>아이디</li>
+                    <li><input type="text" id="user_id" /></li>
+                    <li>비밀번호</li>
+                    <li><input type="password" id="user_pass" /></li>
+                </ul>
+            );
         }
-        function handleHeartMouseOver() {
-          console.log("하트 스쳐 지나감");
+        // 로그인 정보 태그를 만든 함수
+
+        const Btn_box = () => {
+            return (
+                <div className="btn_box">
+                    <button type="submit" id="login_btn">로그인</button>
+                </div>
+            );
         }
-        return (
-          <div className="main-card">
-            <img src={img} alt="고양이" width="400" />
-            <button
-              onClick={handleHeartClick}
-              onMouseOver={handleHeartMouseOver}
-            >
-              🤍
-            </button>
-          </div>
+        // 로그인 버튼 태그를 만든 함수
+        // 태그에 class 는 className으로!
+
+        const Form = () => {
+
+            function handelFormSubmit(event){
+                if(fm.user_id.value==""){
+                    alert("아이디를 입력하세요");
+                } else if(fm.user_pass.value==""){
+                    alert("패스워드를 입력하세요");
+                } else{
+                    alert("로그인 성공!");
+                }
+                event.preventDefault();
+                // 어떤 이벤트를 명시적으로 처리하지 않은 경우, 해당 이벤트에 대한 사용자 에이전트 의 기본 동작을 실행하지 않도록 지정
+                // React if문을 아직 배우지않아 Javascript if문으로 코드작성
+                // 컴포넌트 안에서 쓰는 if/else , return () 안의 JSX 내에서는 사용 불가능
+                // JSX안에서 쓰는 삼항연산자 (조건문 ? 조건문 참일 때 실행 : 조건문 거짓일때 실행), &&연산자
+            }
+
+            return (
+                <form id="fm" onSubmit={handelFormSubmit}>
+                    <Login_info />
+                    <Btn_box />
+                </form>
+            );
+        };
+        // form 태그에 앞서 만든 로그인정보, 로그인버튼 함수를 안에 출력되게 하고 값을 handelFormSubmit에 전달하여 value 값 확인하여 결과 띄움
+
+        const LoginGo = (
+            <div className="login_wrap">
+                <Title>리액트 기초 1주차 복습</Title>   
+                <Form />
+            </div>
         );
-      };
+        //Title 이라는 컴포넌트에 데이터 전달 (데이터 : 리액트 기초 1주차 복습)
+        // 로그인폼 태그들을 출력하게 하는 부모함수 
 
-      const app = (
-        <div>
-          <Title>1번째 고양이 가라사대</Title>
-          <Form />
-          <MainCard img="https://cataas.com/cat/60b73094e04e18001194a309/says/react" />
-          <Favorites />
-        </div>
-      );
+        const Login_wrap = document.querySelector("#App");
 
-      const 여기다가그려 = document.querySelector("#app");
+        ReactDOM.render(LoginGo,Login_wrap);
+        // Login_wrap 에 LoginGo 을 그려준다는 뜻
+        // 아이디 App div태그 안에 LoginGo 내용 출력
 
-      ReactDOM.render(app, 여기다가그려);
+        /* 자바스트립트 */
+        /*
+        function loginGo(){
+            if(fm.user_id.value==""){
+                alert("아이디를 입력하세요");
+                return false;
+            }else if(fm.user_pass.value==""){
+                alert("패스워드를 입력하세요");
+                return false;
+            }else{
+                alert("로그인 성공!");
+                return false;
+            }
+        }
+        */
+
     </script>
   </body>
 </html>
