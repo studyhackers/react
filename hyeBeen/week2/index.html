@@ -32,7 +32,6 @@
         // 보드 입력 form
         const BoardForm = ({ boardInsert }) => {
             const [contents, setContents] = React.useState('');
-            const [contentsList, setContentsList] = React.useState(jsonLocalStorage.getItem('contentsList') || []);
 
             function onBoardSave() {
                 if (contents === '') {
@@ -41,27 +40,22 @@
                 }
 
                 setContents(contents);
-                const contentsLists = [...contentsList, contents];
-                setContentsList(contentsLists);
-                jsonLocalStorage.setItem('contentsList', contentsLists);
-
-                boardInsert({ contentsList });
+                boardInsert({ contents });
             }
-
 
             return (
                 <form>
-                    <input type="text" name="contents" id="contents" placeholder="내용을 입력해주세요." onChange={event => setContents(event.target.value)} />
+                    <input type="text" name="contents" placeholder="내용을 입력해주세요." onChange={event => setContents(event.target.value)} value={contents} />
                     <button type="button" onClick={onBoardSave}>등록</button>
                 </form>
             );
         };
 
         // 보드 내용
-        const BoardContents = ({ }) => {
+        const BoardContents = ({ contentsList }) => {
             return (
                 <ul>
-
+                    {contentsList.map((board, index) => (<BoardItem board={board} key={index} />))}
                 </ul>
             );
         };
@@ -73,16 +67,19 @@
         }
 
         const App = () => {
-            function boardInsert({ contentsList }) {
+            const [contentsList, setContentsList] = React.useState(jsonLocalStorage.getItem('contentsList') || []);
 
-                //BoardContents({ contentsList });
+            function boardInsert({ contents }) {
+                const contentsLists = [...contentsList, contents];
+                setContentsList(contentsLists);
+                jsonLocalStorage.setItem('contentsList', contentsLists);
             }
 
             return (
                 <div>
                     <h1>리액트 게시판</h1>
-                    <BoardForm />
-                    <BoardContents boardInsert={boardInsert} />
+                    <BoardForm boardInsert={boardInsert} />
+                    <BoardContents contentsList={contentsList} />
                 </div>
             );
         };
