@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>리액트 게시판</title>
+</head>
+<style>
+    body {
+        text-align: center;
+    }
+</style>
+
+<body>
+    <div id="app"></div>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script type="text/babel">
+        const jsonLocalStorage = {
+            setItem: (key, value) => {
+                localStorage.setItem(key, JSON.stringify(value));
+            },
+            getItem: (key) => {
+                return JSON.parse(localStorage.getItem(key));
+            },
+        };
+
+        // 보드 입력 form
+        const BoardForm = ({ boardInsert }) => {
+            const [contents, setContents] = React.useState('');
+            const [contentsList, setContentsList] = React.useState(jsonLocalStorage.getItem('contentsList') || []);
+
+            function onBoardSave() {
+                if (contents === '') {
+                    alert('등록할 내용을 입력해주세요.');
+                    return;
+                }
+
+                setContents(contents);
+                const contentsLists = [...contentsList, contents];
+                setContentsList(contentsLists);
+                jsonLocalStorage.setItem('contentsList', contentsLists);
+
+                boardInsert({ contentsList });
+            }
+
+
+            return (
+                <form>
+                    <input type="text" name="contents" id="contents" placeholder="내용을 입력해주세요." onChange={event => setContents(event.target.value)} />
+                    <button type="button" onClick={onBoardSave}>등록</button>
+                </form>
+            );
+        };
+
+        // 보드 내용
+        const BoardContents = ({ }) => {
+            return (
+                <ul>
+
+                </ul>
+            );
+        };
+
+        function BoardItem(props) {
+            return <li>
+                {props.board}
+            </li>
+        }
+
+        const App = () => {
+            function boardInsert({ contentsList }) {
+
+                //BoardContents({ contentsList });
+            }
+
+            return (
+                <div>
+                    <h1>리액트 게시판</h1>
+                    <BoardForm />
+                    <BoardContents boardInsert={boardInsert} />
+                </div>
+            );
+        };
+
+
+        const appWrap = document.querySelector('#app');
+
+        ReactDOM.render(<App />, appWrap);
+    </script>
+</body>
+
+</html>

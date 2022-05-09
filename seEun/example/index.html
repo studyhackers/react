@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2주차 예제</title>
+</head>
+<style>
+  body {
+    text-align: center;
+  }
+</style>
+
+<body>
+  <div id="app"></div>
+
+  <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+  <script type="text/babel">
+    const Title = (props) => {
+      return (
+        <h1>{props.children}</h1>
+      );
+    }
+
+    const BoardForm = ({ updateBoardList, setInputValue }) => {
+      return (
+        <form onSubmit={updateBoardList}>
+          <input type="text" name="name" placeholder="내용을 입력해주세요." onChange={(event) => setInputValue(event.target.value)} />
+          <button type="submit">submit</button>
+        </form>
+      );
+    };
+
+    function BoardList({ boardItems }) {
+      return (
+        <ul>
+          {boardItems.map((item, index) => (
+            <BoardItem item={item} key={index} />
+          ))}
+        </ul>
+      );
+    }
+
+    function BoardItem({ item }) {
+      return (
+        <li>{item.title}</li>
+      );
+    }
+
+
+    const App = () => {
+      const initialBoardItems = [
+        {
+          title: "첫번째 게시글입니다.",
+        },
+        {
+          title: "두번째 게시글입니다.",
+        },
+        {
+          title: "세번째 게시글입니다.",
+        }
+      ];
+
+      const [boardItems, setBoardItems] = React.useState(initialBoardItems);
+      const [inputValue, setInputValue] = React.useState('');
+
+      const handleFormSubmit = (event) => {
+        event.preventDefault();
+        if (inputValue == '') {
+          alert('빈 값으로 입력할 수 없습니다!');
+          return;
+        }
+        const newBoardItems = [...boardItems, { title: inputValue }];
+        setBoardItems(newBoardItems);
+      };
+      return (
+        <div>
+          <Title>리액트 게시판</Title>
+          <BoardForm updateBoardList={handleFormSubmit} setInputValue={setInputValue} />
+          <BoardList boardItems={boardItems} />
+        </div>
+      );
+    }
+    const writeHere = document.querySelector('#app');
+    ReactDOM.render(<App />, writeHere);
+  </script>
+</body>
+
+</html>
