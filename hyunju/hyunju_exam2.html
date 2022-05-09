@@ -1,0 +1,101 @@
+<html>
+
+<head>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script type="text/babel">
+
+        const BoardItem = (props) => {
+            return (
+                <li>{props.item.title}</li>
+            )
+        }
+
+        const BoardList = ({ boardItems }) => {
+            //BoardList가 공장이고 boardItems는 재료다 boardItems가 있어야 BoardList가 구성된다.
+            console.log(boardItems);
+            //배열을 console에서 확인할수 있다.
+
+            // boardItems.map(
+            //     function (item, index) {
+            //         console.log(item);
+            //     }
+            // );
+            // loop하는 함수
+
+            return (
+                <ul>
+                    {
+                        boardItems.map(
+                            (item, index) => <BoardItem item={item} key={index} />
+                        )
+                    }
+                </ul>
+                //react에서 배열을 loop하는 방법                 
+            )
+        }
+
+        const BoardForm = ({ handleFormSubmit }) => {
+            return (
+                <form onSubmit={handleFormSubmit} >
+                    <input type="text" name="name" placeholder="여기다 써주세요." style={{ width: "250px", height: "30px", verticalAlign: "middle" }} />
+                    <button type="submit" style={{ width: "50px", height: "30px", verticalAlign: "middle", background: "#000", color: "#fff" }}>전송</button>
+                </form>
+            )
+        }
+
+        // 2번 째 실행.
+        const App = () => {
+            // 데이터 정의
+            const initialBoardItems = [
+                {
+                    title: "첫번째 게시글입니다.",
+                },
+                {
+                    title: "두번째 게시글입니다.",
+                },
+                {
+                    title: "세번째 게시글입니다.",
+                },
+            ];
+
+            // react usestate 사용해서 데이터 전송 & 변환
+            const [boardItems, setBoardItems] = React.useState(initialBoardItems);
+
+            //폼 전송했을 때 
+            const handleFormSubmit = (event) => {
+                // reload 방지
+                event.preventDefault();
+
+                // input text에 입력한 값 , 뭔가를 썼을때 그걸 가져오기 위해 쓰는 문법
+                const inputData = event.target.name.value;
+
+                setBoardItems([...boardItems, { title: inputData }]);
+
+                // ...폼에서 입력한 데이터로 boardItems에 추가해주는 함수 로직 구현
+            };
+
+
+            return (
+                <div className="App">
+                    <h1>글을 써봅시다 :) </h1>
+                    <BoardForm handleFormSubmit={handleFormSubmit} />
+                    <BoardList boardItems={boardItems} />
+                </div>
+            )
+        };
+
+        const app = document.querySelector('#app');
+
+        // 1번째 실행.
+        // <App /> JSX -> javascript에 XML 문법(마크업문법)을 추가한 것.
+        ReactDOM.render(<App />, app);
+    </script>
+</head>
+
+<body>
+    <div id="app"></div>
+</body>
+
+</html>
