@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>리액트 스터디 2주차 실습 예제</title>
+  </head>
+  <body>
+      <div id="app"></div>
+  </body>
+<!-- 
+# 🍔 리액트 스터디 2주차 실습 예제 🍔
+
+### 배열로만 간단하게 게시판 기능 구현하기
+
+<br/>
+
+state와 props를 활용하여 게시판 앱을 구현해주세요.  
+최종적으로 구성되야하는 컴포넌트는 아래와 같습니다.
+
+1. App
+2. BoardList
+3. BoardItem
+4. BoardForm
+
+아래 코드의 state 배열을 이용해 폼 입력시 데이터가 추가되는 게시판을 만들어주시면 됩니다.
+-->
+<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script type="text/babel">
+    // 결과물 일부코드
+
+    const BoardForm = ({handleFormSubmit}) => {
+        return (
+          <form onSubmit={handleFormSubmit}>
+            <input type="text" name="name" placeholder="게시글을 입력해주세요" />
+            <button type="submit">생성</button>
+          </form>
+        );
+    }
+
+    function BoardItem(props) {
+        return <li>{props.title}</li>;
+    }
+
+    function BoardList({boardItem}){
+        return (
+            <ul>
+                {boardItem.map((item,index) => (
+                    <BoardItem title={item.title} key={index} />
+                ))}
+            </ul>
+        );
+    };
+
+    const App = () => {
+        const initialBoardItems = [
+          {
+            title: "첫번째 게시글입니다.",
+          },
+          {
+            title: "두번째 게시글입니다.",
+          },
+          {
+            title: "세번째 게시글입니다.",
+          },
+        ];
+        const [boardItem, setBoardItem] = React.useState(initialBoardItems);
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const value = e.target[0].value;
+            console.log(e);
+            if(value==''){
+                alert("게시글을 입력해주세요");
+            }else{
+                setBoardItem([...boardItem, { title: value }]);
+            }
+        }
+
+        return (
+            <div className="App">
+                <h1>리액트 게시판</h1>
+                <BoardForm handleFormSubmit={handleFormSubmit}  />
+                <BoardList boardItem={boardItem} />
+            </div>
+        );
+    }
+
+    const 리액트게시판 = document.querySelector('#app');
+
+    ReactDOM.render(<App />,리액트게시판);
+</script>
+</html>

@@ -37,9 +37,14 @@
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     <!-- 바벨은 자바스크립트 es6 문법을 es5로 변환해주는 트렌스파일러(transpiler), 이것을 통해 React를 일반 브라우저에서 실행시킬 수 있다. -->
     <script type="text/babel">
-
-      console.log("야옹");
-
+      const jsonLocalStorage = {
+        setItem: (key, value) => {
+          localStorage.setItem(key, JSON.stringify(value));
+        },
+        getItem: (key) => {
+          return JSON.parse(localStorage.getItem(key));
+        },
+      };
 
       /* 리액트 작업 */
       function CatItem(props){
@@ -51,37 +56,23 @@
       }
       // Favorites의 자식 함수, 부모함수에서 받은 img 데이터를 {props.img} 출력
 
-      function Favorites(){
+      function Favorites({favorites}){
         return (
           <ul className="favorites">
-            <CatItem img="https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn" />
-            <CatItem img="https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript" />
+            {favorites.map((cat) => (
+              <CatItem img={cat} key={cat} />
+            ))}
           </ul>
         );
       }
       // CatItem 의 부모 함수, 자식함수 li에 src 데이터를 태워보냄 
       // 태그 class는 className으로 써줘여함
 
-      const MainCard = ({img}) => {
-
-        // 클릭 시 이벤트 함수
-        function handleHeartClick(){
-          console.log("하트 눌렀음");
-        }
-
-        // 마우스 오버 시 이벤트 함수
-        function handleHeartMouseOver(){
-          console.log("하트 스쳐 지나감");
-        }
-
+      const MainCard = ({img, onHeartClick}) => {
         return (
           <div className="main-card">
-            <img
-              src={img}
-              alt="고양이"
-              width="400"
-            />
-            <button onClick={handleHeartClick} onMouseOver={handleHeartMouseOver}>?</button>
+            <img src={img} alt="고양이" width="400" />
+            <button onClick={onHeartClick}>♥</button>
           </div>
         );
       }
@@ -91,45 +82,85 @@
       }
       // app 부모 컴포넌트에서 전달받은 데이터 h1태그에 출력되게 하는 자식 컴포넌트
 
-      const Form = () => {
+      const Form = ({updateMainCat}) => {
+        const includesHangul = (text) => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/i.test(text);
+        const [value, setValue] = React.useState('');
+        const [errorMessage, setErrorMessage] = React.useState('');
 
-        // const [값, 함수] = useState(초기값)
-        const [counter, setCounter] = React.useState(1);
-        console.log("카운터", counter);
+        function handleInputChange(e) {
+          const userVlaue = e.target.value;
+          setErrorMessage("");
+          if(includesHangul(userVlaue)){
+            setErrorMessage("한글은 입력할 수 없습니다.");
+          }
+          setValue(userVlaue.toUpperCase());
+        }
 
-        // 생성버튼 눌렀을 때 발생하는 이벤트 함수
-        function handelFormSubmit(event){
+        function handelFormSubmit(e) {
+          e.preventDefault();
+          setErrorMessage("");
 
-          event.preventDefault();
-          // 어떤 이벤트를 명시적으로 처리하지 않은 경우, 해당 이벤트에 대한 사용자 에이전트 의 기본 동작을 실행하지 않도록 지정
-
-          console.log("폼 전송됨");
-
-          setCounter(counter + 1);
-          // counter 값(초기값:1) + 1
+          if(value == ''){
+            setErrorMessage("빈 값으로 만들 수 없습니다.");
+            return;
+          }
+          updateMainCat();
         }
 
         return (
           <form onSubmit={handelFormSubmit}>
-            <input type="text" name="name" placeholder="영어 대사를 입력해주세요" />
+            <input type="text" name="name" placeholder="영어 대사를 입력해주세요" value={value} onChange={handleInputChange} />
             <button type="submit">생성</button>
+            <p style={{color:"red"}}>{errorMessage}</p>
           </form>
         );
       };
 
-      const app = (
-        <div>
-          <Title>1번째 고양이 가라사대</Title>
-          <Form />
-          <MainCard img="https://cataas.com/cat/60b73094e04e18001194a309/says/react" />
-          <Favorites />
-        </div>
-      );
+      const App = () => {
+        const CAT1 = "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
+        const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
+        const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
+
+        // const [값, 함수] = useState(초기값)
+        const [counter, setCounter] = React.useState(
+          jsonLocalStorage.getItem("counter")
+        );
+        const [mainCat, setMainCat] = React.useState(CAT1);
+        const [favorites, setFavorites] = React.useState(
+          jsonLocalStorage.getItem("favorites") || []
+        );
+
+        console.log("카운터", counter);
+
+        // 생성버튼 눌렀을 때 발생하는 이벤트 함수
+        function updateMainCat(){
+          setMainCat(CAT2);
+          const nextCounter = counter + 1;
+          setCounter(nextCounter);
+          jsonLocalStorage.setItem("counter",nextCounter);
+        }
+
+        // 클릭 시 이벤트 함수
+        function handleHeartClick(){
+          const nextFavorites = [...favorites, mainCat]
+          setFavorites(nextFavorites);
+          jsonLocalStorage.setItem('favorites',nextFavorites)
+        }
+
+        return (
+          <div>
+            <Title>{counter}번째 고양이 가라사대</Title>
+            <Form updateMainCat={updateMainCat} />
+            <MainCard img={mainCat} onHeartClick={handleHeartClick} />
+            <Favorites favorites={favorites} />
+          </div>
+        )
+      }
       //부모 컴포넌트
 
       const 여기다가그려 = document.querySelector("#app");
 
-      ReactDOM.render(app,여기다가그려);
+      ReactDOM.render(<App />,여기다가그려);
       // 여기다가그려(id:app div태그) 에 app 을 그려준다는 뜻
 
       /* 자바스크립트로 작업한 경우 */
