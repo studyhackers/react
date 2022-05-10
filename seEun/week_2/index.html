@@ -32,7 +32,6 @@
 
   <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
-  <!-- head의 변환된 내용으로 브라우저가 해석할 수 있도록 하는 javascript compiler -->
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
   <script type="text/babel">
@@ -125,6 +124,10 @@
       const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
       const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
       const [counter, setCounter] = React.useState(
+        //브라우저에서 접근 가능하기 때문에 보안에 취약, 중요한 정보 저장 금지
+        //쿠키와 다르게 expire를 지정할 수 없으며, object 형태도 저장 가능
+        //서버와 통신 시 전송되지 않아 트래픽 양을 줄일 수 있음
+        //동일한 컴퓨터, 동일한 브라우저 내에서만 데이터 지속
         jsonLocalStorage.getItem('counter')
       );
       const [mainCatImg, setMainCatImg] = React.useState(CAT1);
@@ -143,6 +146,17 @@
       function handleHeartClick() {
         //스프레드 오퍼레이터 문법(ES6+)
         //favorites 배열을 늘어뜨려 쓴다음 뒤에 추가한다는 뜻!
+        //일반적인 배열 복사와 다름
+        // const arr1 = [1,2];
+        // const arr2 = arr1; //이렇게 배열 복사할 경우 arr2는 arr1를 참조하는 배열이 됨
+        // arr2.push(3)
+        // arr1
+        // 결과 >> [1, 2, 3]
+
+        // const arr3 = [...arr1]
+        // arr3.push(4)
+        // arr1
+        // (3) [1, 2, 3]
         const nextFavorites = [...favorites, mainCatImg];
         setFavorites(nextFavorites);
         jsonLocalStorage.setItem('favorites', nextFavorites);
