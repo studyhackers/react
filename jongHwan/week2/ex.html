@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>리액트 게시판</title>
+</head>
+<style>
+    body {
+        text-align: center;
+    }
+</style>
+
+<body>
+    <div id="app"></div>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script type="text/babel">
+		
+
+
+
+
+		const BoardList = ({ boardItems }) => {
+
+
+			return (
+				<ul>
+					{
+						boardItems.map(
+							(item, index) => <li key={index}>{`${item.title}`}</li>
+						)
+					}
+				</ul>           
+			)
+		}
+
+		 const BoardForm = ({ handleFormSubmit }) => {
+			
+			const [contents, setContents] = React.useState('');
+			
+			
+
+            return (
+                <form onSubmit={handleFormSubmit} >
+                    <input type="text" name="name" placeholder="여기다 써주세요." style={{ width: "250px", height: "30px", verticalAlign: "middle" }} onChange={event => setContents(event.target.value)} value={contents} />
+                    <button type="submit" style={{ width: "50px", height: "30px", verticalAlign: "middle", background: "#000", color: "#fff" }}>전송</button>
+                </form>
+            )
+        }
+		
+
+		const App = () => {
+			
+			const initialBoardItems = [
+			{
+			  title: "첫번째 게시글입니다.",
+			},
+			{
+			  title: "두번째 게시글입니다.",
+			},
+			{
+			  title: "세번째 게시글입니다.",
+			},
+		  ];
+
+		  const [boardItems, setBoardItems] = React.useState(initialBoardItems);
+
+		  const handleFormSubmit = (event) => {
+			event.preventDefault();
+			
+			setBoardItems(boardItems.concat({title:event.target[0].value}))
+			
+			console.log(boardItems)
+			
+			// ...폼에서 입력한 데이터로 boardItems에 추가해주는 함수 로직 구현
+		  };
+			
+						
+		  
+
+		  return (
+			<div className="App">
+			  <h1>리액트 게시판</h1>
+			  <BoardForm handleFormSubmit={handleFormSubmit}/>
+			  <BoardList boardItems={boardItems} />
+			</div>
+		  );
+
+		}
+
+
+
+        const appWrap = document.querySelector('#app');
+
+        ReactDOM.render(<App />, appWrap);
+    </script>
+</body>
+
+</html>
