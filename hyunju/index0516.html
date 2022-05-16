@@ -1,0 +1,84 @@
+<html>
+
+<head>
+   <style>
+      .hidden {
+         display: none;
+      }
+   </style>
+   <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+   <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+   <script type="text/babel">
+      //가격 리스트
+      const PriceList = () => {
+         return null
+      };
+      //팝업 버튼
+      const PopupBtn = ({ handlePopupClick, popupFlag }) => {
+         console.log(popupFlag);
+         return (
+            <div>
+               <PopupImg popupFlag={popupFlag} />
+               <button onClick={handlePopupClick}>강의 커리큘럼 보기</button>
+            </div>
+
+         )
+      };
+      //팝업 이미지
+      const PopupImg = ({ popupFlag }) => {
+         return (
+            // 삼항연산자
+            <div className={popupFlag ? 'hidden' : ''}>
+               <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)" }}>
+                  <img src="//gscdn.hackers.co.kr/champ/img/event/2019/07/2200/pc/type3/v1/curri_pop_500_01.jpg" />
+               </div>
+            </div>
+         )
+      }
+      //소문내기 이벤트 입력폼
+      const BoradForm = () => {
+         return null
+      };
+      //가격 리스트
+      const BoardList = () => {
+         return null
+      };
+
+      const App = () => {
+         const [popupFlag, setpopupFlag] = React.useState(true);
+         function handlePopupClick() {
+            if (popupFlag) {
+               setpopupFlag(false);
+            } else {
+               setpopupFlag(true);
+            }
+         }
+
+         return (
+            <div className="App">
+               <h1>수강신청</h1>
+               <PriceList />
+               <h1>팝업</h1>
+               <PopupBtn handlePopupClick={handlePopupClick} popupFlag={popupFlag} />
+               <h1>소문내기 이벤트</h1>
+               <BoradForm />
+               <BoardList />
+            </div>
+         )
+      };
+
+
+      const app = document.querySelector('#app');
+
+      // 1번째 실행.
+      // <App /> JSX -> javascript에 XML 문법(마크업문법)을 추가한 것.
+      ReactDOM.render(<App />, app);
+   </script>
+</head>
+
+<body>
+   <div id="app"></div>
+</body>
+
+</html>
