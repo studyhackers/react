@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>예제</title>
+    <style>
+      h2 {
+        margin-top: 40px;
+      }
+
+      .bg {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        position: fixed;
+        z-index: 100;
+      }
+      .content {
+        position: relative;
+        width: 572px;
+        margin: 50px auto 0;
+      }
+      .content .close_btn {
+        color: #fff;
+        position: absolute;
+        top: -26px;
+        right: -27px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+      }
+      .somun_form input {
+        width: 280px;
+      }
+      table {
+        border: 1px solid #999;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script
+      src="https://unpkg.com/react@17/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script type="text/babel">
+      const Title = (props) => {
+        return <h2>{props.children}</h2>;
+      };
+
+      const BookList = ({ bookItem, price, setPrice }) => {
+        const [isChecked, setIsChecked] = React.useState(false);
+        function onChangeInput(e) {
+          // const isChecked = e.target.checked;
+          if (!isChecked) {
+            console.log("aa");
+            setIsChecked(true);
+            setPrice(price + bookItem.price);
+          } else {
+            console.log("bb");
+            setIsChecked(false);
+            setPrice(price - bookItem.price);
+          }
+        }
+        return (
+          <li>
+            <input
+              type={bookItem.inputType}
+              name="book"
+              id={bookItem.id}
+              onChange={onChangeInput}
+              checked={isChecked}
+            />
+            <label htmlFor={bookItem.id}>
+              {bookItem.title}: {bookItem.price}원
+            </label>
+          </li>
+        );
+      };
+
+      const BookListForm = () => {
+        const bookItems = [
+          {
+            title: "해커스 왕기초",
+            inputType: "radio",
+            price: 20000,
+            id: "book1",
+          },
+          {
+            title: "해커스 첫토익",
+            inputType: "radio",
+            price: 20000,
+            id: "book2",
+          },
+          {
+            title: "그래머게이트웨이",
+            inputType: "checkbox",
+            price: 20000,
+            id: "book3",
+          },
+        ];
+
+        const [price, setPrice] = React.useState(120000);
+        const [isChecked, setIsChecked] = React.useState(false);
+
+        // const onChangeInput = (e) => {
+        //   if (!isChecked) {
+        //     setIsChecked(true);
+        //   } else {
+        //     setIsChecked(false);
+        //   }
+        // };
+
+        return (
+          <div>
+            <form>
+              <ul>
+                <BookList
+                  bookItem={bookItems[0]}
+                  price={price}
+                  setPrice={setPrice}
+                />
+                <BookList
+                  bookItem={bookItems[1]}
+                  price={price}
+                  setPrice={setPrice}
+                />
+                <BookList
+                  bookItem={bookItems[2]}
+                  price={price}
+                  setPrice={setPrice}
+                />
+              </ul>
+              <p>총 강의 금액: {price}원</p>
+              <button>수강신청</button>
+            </form>
+          </div>
+        );
+      };
+
+      const ApplyLect = () => {
+        return (
+          <div>
+            <Title>수강신청</Title>
+            <BookListForm />
+          </div>
+        );
+      };
+
+      const Popup = () => {
+        const [popupOn, setPopupOn] = React.useState(false);
+
+        const openPopup = () => {
+          setPopupOn(!popupOn);
+        };
+
+        const PopupContent = () => {
+          return (
+            <div className="bg">
+              <div className="content">
+                <img
+                  src="//gscdn.hackers.co.kr/champ/img/event/2019/07/2200/pc/type3/v1/curri_pop_500_01.jpg"
+                  alt=""
+                />
+                <button className="close_btn" onClick={openPopup}>
+                  X
+                </button>
+              </div>
+            </div>
+          );
+        };
+
+        return (
+          <div>
+            <Title>팝업</Title>
+            <button onClick={openPopup}>강의 커리큘럼 보기</button>
+            {popupOn ? <PopupContent /> : ""}
+          </div>
+        );
+      };
+
+      const SomunInput = ({ value, setValue, updateList }) => {
+        const [noticeMessage, setNoticeMessage] = React.useState("");
+        const writeText = (e) => {
+          setValue(e.target.value);
+        };
+
+        const submitSomunForm = (e) => {
+          e.preventDefault();
+          if (value === "") {
+            setNoticeMessage("url을 입력해주세요");
+            return;
+          }
+          setValue("");
+          updateList();
+        };
+
+        return (
+          <div>
+            <form className="somun_form" onSubmit={submitSomunForm}>
+              <input
+                type="text"
+                placeholder="url을 입력하세요"
+                onChange={writeText}
+                value={value}
+              />
+              <button>인증하기</button>
+            </form>
+            <p>{noticeMessage}</p>
+          </div>
+        );
+      };
+
+      const SomunList = ({ list }) => {
+        return (
+          <table>
+            <colgroup>
+              <col style={{ width: "70%" }} />
+              <col />
+            </colgroup>
+            <tbody>
+              <tr>
+                <td>URL</td>
+                <td>등록일자</td>
+              </tr>
+              {list.map((list, index) => (
+                <tr id={list.id} key={index}>
+                  <td>{list.url}</td>
+                  <td>{list.regDate}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        );
+      };
+
+      const SomunEvent = () => {
+        const fetchList = async () => {
+          const GET_DATA = "./event-list.json";
+          const response = await fetch(GET_DATA);
+          const responseJson = await response.json();
+          console.log(responseJson);
+        };
+
+        const initialList = [
+          {
+            id: "1",
+            url: "https://example.com",
+            regDate: "2022-04-22",
+          },
+          {
+            id: "2",
+            url: "https://example.com",
+            regDate: "2022-04-22",
+          },
+          {
+            id: "3",
+            url: "https://example.com",
+            regDate: "2022-04-22",
+          },
+          {
+            id: "4",
+            url: "https://example.com",
+            regDate: "2022-04-22",
+          },
+        ];
+
+        const submitDate =
+          new Date().getMonth() < 9
+            ? new Date().getFullYear().toString() +
+              "-0" +
+              (new Date().getMonth() + 1).toString() +
+              "-" +
+              new Date().getDate().toString()
+            : new Date().getFullYear().toString() +
+              "-" +
+              (new Date().getMonth() + 1).toString() +
+              "-" +
+              new Date().getDate().toString();
+
+        const [list, setList] = React.useState(initialList);
+        const [value, setValue] = React.useState("");
+
+        // async function updateList() {
+        //   const newList = await fetchList();
+        //   setList([...newList, { url: value, regDate: submitDate }]);
+        // }
+
+        function updateList() {
+          setList([...list, { url: value, regDate: submitDate }]);
+        }
+
+        return (
+          <div>
+            <Title>소문내기 이벤트</Title>
+            <SomunInput
+              value={value}
+              setValue={setValue}
+              updateList={updateList}
+            />
+            <SomunList list={list} />
+          </div>
+        );
+      };
+
+      const App = () => {
+        return (
+          <div>
+            <ApplyLect />
+            <Popup />
+            <SomunEvent />
+          </div>
+        );
+      };
+
+      const here = document.querySelector("#app");
+
+      ReactDOM.render(<App />, here);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>예제</title>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script
+      src="https://unpkg.com/react@17/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script type="text/babel">
+      const Title = (props) => {
+        return <h2>{props.children}</h2>;
+      };
+
+      const BookList = ({ bookPrice, price, setPrice }) => {
+        // const [isChecked, setIsChecked] = React.useState(false);
+        // function onChangeInput(e) {
+        //   if (!isChecked) {
+        //     setIsChecked(true);
+        //     setPrice(price + bookItem.price);
+        //   } else {
+        //     setIsChecked(false);
+        //     setPrice(price - bookItem.price);
+        //   }
+        // }
+        return (
+          <ul>
+            <li>
+              <input
+                type="radio"
+                name="book"
+                id="book1"
+                // onChange={onChangeInput}
+                value="20000"
+              />
+              <label htmlFor="book1">해커스 왕기초: 20000원</label>
+            </li>
+            <li>
+              <input
+                type="radio"
+                name="book"
+                id="book2"
+                value="20000"
+                // onChange={onChangeInput}
+              />
+              <label htmlFor="book2">해커스 첫토익: 20000원</label>
+            </li>
+            <li>
+              <input
+                type="checkbox"
+                name="book"
+                id="book3"
+                value="20000"
+                // onChange={onChangeInput}
+              />
+              <label htmlFor="book3">그래머게이트웨이: {bookPrice[2]}원</label>
+            </li>
+          </ul>
+        );
+      };
+
+      const BookListForm = () => {
+        const bookPrice = [20000, 20000, 20000];
+
+        const [price, setPrice] = React.useState(120000);
+        const [isChecked, setIsChecked] = React.useState(false);
+
+        return (
+          <div>
+            <form>
+              <BookList bookPrice={bookPrice} />
+              <p>총 강의 금액: {price}원</p>
+              <button>수강신청</button>
+            </form>
+          </div>
+        );
+      };
+
+      const ApplyLect = () => {
+        // const [price, setPrice] = React.useState("120,000");
+
+        // function updateList(e) {
+        //   setBookItems([...boardItems, { title: value }]);
+        // }
+
+        return (
+          <div>
+            <Title>수강신청</Title>
+            <BookListForm />
+          </div>
+        );
+      };
+
+      const Popup = () => {
+        return (
+          <div>
+            <Title>팝업</Title>
+          </div>
+        );
+      };
+
+      const SomunEvent = () => {
+        return (
+          <div>
+            <Title>소문내기 이벤트</Title>
+          </div>
+        );
+      };
+
+      const App = () => {
+        return (
+          <div>
+            <ApplyLect />
+            <Popup />
+            <SomunEvent />
+          </div>
+        );
+      };
+
+      const here = document.querySelector("#app");
+
+      ReactDOM.render(<App />, here);
+    </script>
+  </body>
+</html>
