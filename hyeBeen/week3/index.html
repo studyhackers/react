@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>week3 예제</title>
+</head>
+<style>
+    body {
+        text-align: left;
+    }
+</style>
+
+<body>
+    <div id="app"></div>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script type="text/babel">
+        const boardListData = [
+            {
+                "id": "1",
+                "url": "https://example.com",
+                "regDate": "2022-04-22"
+            },
+            {
+                "id": "2",
+                "url": "https://example.com",
+                "regDate": "2022-04-22"
+            },
+            {
+                "id": "3",
+                "url": "https://example.com",
+                "regDate": "2022-04-22"
+            },
+            {
+                "id": "4",
+                "url": "https://example.com",
+                "regDate": "2022-04-22"
+            }
+        ]
+
+        const jsonLocalStorage = {
+            setItem: (key, value) => {
+                localStorage.setItem(key, JSON.stringify(value));
+            },
+            getItem: (key) => {
+                return JSON.parse(localStorage.getItem(key));
+            },
+        };
+
+        // 수강신청
+        const Lecture = () => {
+            const totalPrice = 0;
+            const [price, setPrice] = React.useState(130000);
+            const [checked, setChecked] = React.useState(false);
+            const [errorMessage, setErrorMesssage] = React.useState('');
+
+            // 교재 - 라디오버튼
+            function onChangeCheckRadio(e) {
+                const totalPrice = 130000 + Number(e.target.value);
+                setPrice(totalPrice);
+                setChecked(true); // 교재 선택 여부를 확인하기 위해 checked 값 저장
+                setErrorMesssage(""); //필수 교재를 선택하였을 경우 error 메세지 값 초기화
+            }
+
+            // 교재 - 라디오버튼
+            function onChangeCheckbox(e) {
+                const bookChecked = e.target.checked;
+
+                if (bookChecked) {
+                    setPrice(price + Number(e.target.value));
+                } else {
+                    setPrice(price - Number(e.target.value));
+                }
+            }
+
+            // 수강신청 버튼 
+            function lectureRegist() {
+                setErrorMesssage("");
+
+                if (!checked) {
+                    setErrorMesssage("토익교재 포함 선택 시 그래머 게이트웨이 교재를 선택할 수 있습니다.");
+                } else {
+                    alert('수강신청이 완료되었습니다!');
+                }
+            }
+
+            return (
+                <div>
+                    <h1>수강신청</h1>
+                    <label htmlfor="book1"><input type="radio" id="book1" name="book_kind" value="20000" onClick={onChangeCheckRadio} />해커스 왕기초</label><br />
+                    <label htmlfor="book2"><input type="radio" id="book2" name="book_kind" value="20000" onClick={onChangeCheckRadio} />해커스 첫토익</label><br />
+                    <label htmlfor="book3"><input type="checkbox" id="book3" name="book_choice" value="20000" onClick={onChangeCheckbox} />그래머게이트웨이</label>
+
+                    <p>총 강의 금액 : {price.toLocaleString()}</p>
+                    <button type="button" onClick={lectureRegist}>수강신청</button>
+                    <p style={{ color: "red" }}>{errorMessage}</p>
+                </div>
+            );
+        }
+
+        // 커리큘럼 팝업
+        const Curriculum = () => {
+            return (
+                <div>
+                    <h1>팝업</h1>
+                    <button type="button">강의 커리큘럼 보기</button>
+                </div>
+            );
+        }
+
+        // 보드 입력 form
+        const BoardForm = ({ boardInsert }) => {
+            const [contents, setContents] = React.useState('');
+            const [errorMessage, setErrorMesssage] = React.useState('');
+
+            function onBoardSave() {
+                setErrorMesssage("");
+
+                if (contents === '') {
+                    setErrorMesssage("url을 입력해주세요.");
+                    return;
+                }
+
+                setContents(contents);
+                boardInsert({ contents });
+            }
+
+            return (
+                <div>
+                    <h1>소문내기 이벤트</h1>
+                    <form>
+                        <input type="text" name="contents" placeholder="url을 입력해주세요." onChange={event => setContents(event.target.value)} value={contents} />
+                        <button type="button" onClick={onBoardSave}>인증하기</button>
+                        <p style={{ color: "red" }}>{errorMessage}</p>
+                    </form>
+                </div>
+            );
+        };
+
+        // 보드 리스트
+        const BoardList = ({ boardListData }) => {
+            return (
+                <table>
+                    <thead>
+                        <tr>
+                            <th>url</th>
+                            <th>등록일자</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {boardListData.map((board, index) => (<BoardItem board={board} key={index} />))}
+                    </tbody>
+
+                </table>
+            );
+        };
+
+        function BoardItem(props) {
+            return <tr>
+                <td>{props.board.url}</td>
+                <td>{props.board.regDate}</td>
+            </tr>
+        }
+
+        const App = () => {
+            const [contentsList, setContentsList] = React.useState(() => {
+                return jsonLocalStorage.getItem('contentsList') || [];
+            });
+
+            function boardInsert({ contents }) {
+                const contentsLists = [...contentsList, contents];
+                setContentsList(contentsLists);
+                jsonLocalStorage.setItem('contentsList', contentsLists);
+            }
+
+            return (
+                <div>
+                    <Lecture></Lecture>
+                    <Curriculum></Curriculum>
+                    <BoardForm boardInsert={boardInsert}></BoardForm>
+                    <BoardList boardListData={boardListData}></BoardList>
+                </div>
+            );
+        };
+
+        const 여기다그려 = document.querySelector('#app');
+        ReactDOM.render(<App />, 여기다그려);
+    </script>
+</body>
+
+</html>
