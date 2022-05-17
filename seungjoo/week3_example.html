@@ -1,318 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>예제</title>
-  <style>
-    h2 {
-      margin-top: 40px;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>예제</title>
+    <style>
+      h2 {
+        margin-top: 40px;
+      }
 
-    .bg {
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      position: fixed;
-      z-index: 100;
-    }
-    .content {
-      position: relative;
-      width: 572px;
-      margin: 50px auto 0;
-    }
-    .content .close_btn {
-      color: #fff;
-      position: absolute;
-      top: -26px;
-      right: -27px;
-      background: none;
-      border: none;
-      font-size: 20px;
-      cursor: pointer;
-    }
-    .somun_form input {
-      width: 280px;
-    }
-    table {
-      border: 1px solid #999;
-    }
-  </style>
-</head>
-<body>
-<div id="app"></div>
+      .bg {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        position: fixed;
+        z-index: 100;
+      }
+      .content {
+        position: relative;
+        width: 572px;
+        margin: 50px auto 0;
+      }
+      .content .close_btn {
+        color: #fff;
+        position: absolute;
+        top: -26px;
+        right: -27px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+      }
+      .somun_form input {
+        width: 280px;
+      }
+      table {
+        border: 1px solid #999;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
 
-<script
-        src="https://unpkg.com/react@17/umd/react.development.js";
-        crossorigin
-></script>
-<script
-        src="https://unpkg.com/react-dom@17/umd/react-dom.development.js";
-        crossorigin
-></script>
-<script src="https://unpkg.com/babel-standalone@6/babel.min.js";></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script
+      src="https://unpkg.com/react@17/umd/react.development.js"
+      ;
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+      ;
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js" ;></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
-<script type="text/babel">
-    const Title = (props) => {
+    <script type="text/babel">
+      const Title = (props) => {
         return <h2>{props.children}</h2>;
-    };
+      };
 
-    const BookList = ( props) => {
-        const [isChecked, setIsChecked] = React.useState(false);
+      const BookList = (props) => {
+        const [isChecked, setIsChecked] = React.useState(false); //checkbox 상태 변화 관리
 
-        function radiotest(e){
-            console.log(props)
-            props.setPrice2(props.bookItem.price);
+        //radio, checkbox 상태 관리하는 함수 따로
+        function radiotest(e) {
+          console.log(props);
+          props.setPrice2(props.bookItem.price);
+          props.setNoticeMessage("");
         }
 
-        function checktest(e){
-
-            if (!isChecked) {
-                console.log("aa");
-                setIsChecked(true);
-                props.setPrice(props.price + props.bookItem.price);
-            } else {
-                console.log("bb");
-                setIsChecked(false);
-                props.setPrice(props.price - props.bookItem.price);
+        function checktest(e) {
+          if (!isChecked) {
+            setIsChecked(true);
+            props.setPrice(props.price + props.bookItem.price);
+            if (props.price2 === 0) {
+              props.setNoticeMessage(
+                "토익교재 포함 선택 시 그래머 게이트웨이 교재를 선택할 수 있습니다."
+              );
             }
-
+          } else {
+            setIsChecked(false);
+            props.setPrice(props.price - props.bookItem.price);
+            props.setNoticeMessage("");
+          }
         }
 
         function onChangeInput(e) {
-            // const isChecked = e.target.checked;
-            e.target.type === "radio" ? radiotest(e) : checktest(e)
-
+          e.target.type === "radio" ? radiotest(e) : checktest(e);
         }
 
         return (
-            <li>
-                <input
-                    type={props.bookItem.inputType}
-                    name="book"
-                    id={props.bookItem.id}
-                    onChange={onChangeInput}
-
-                    value={props.bookItem.price}
-                />
-                <label htmlFor={props.bookItem.id}>
-                    {props.bookItem.title}: {props.bookItem.price}원
-                </label>
-            </li>
+          <li>
+            <input
+              type={props.bookItem.inputType}
+              name="book"
+              id={props.bookItem.id}
+              onChange={onChangeInput}
+              value={props.bookItem.price}
+            />
+            <label htmlFor={props.bookItem.id}>
+              {props.bookItem.title}: {props.bookItem.price}원
+            </label>
+          </li>
         );
-    };
+      };
 
-    const BookListForm = () => {
+      const BookListForm = () => {
         const bookItems = [
-            {
-                title: "해커스 왕기초",
-                inputType: "radio",
-                price: 20000,
-                id: "book1",
-            },
-            {
-                title: "해커스 첫토익",
-                inputType: "radio",
-                price: 30000,
-                id: "book2",
-            },
-            {
-                title: "그래머게이트웨이",
-                inputType: "checkbox",
-                price: 20000,
-                id: "book3",
-            },
+          {
+            title: "해커스 왕기초",
+            inputType: "radio",
+            price: 20000,
+            id: "book1",
+          },
+          {
+            title: "해커스 첫토익",
+            inputType: "radio",
+            price: 20000,
+            id: "book2",
+          },
+          {
+            title: "그래머게이트웨이",
+            inputType: "checkbox",
+            price: 20000,
+            id: "book3",
+          },
         ];
 
         const [price, setPrice] = React.useState(120000);
-        const [price2, setPrice2] = React.useState(0);
+        const [price2, setPrice2] = React.useState(0); //radio 버튼 선택지의 가격
+        const [noticeMessage, setNoticeMessage] = React.useState("");
 
+        function onSubmitForm(e) {
+          if (price2 === 0) {
+            //radio 버튼이 하나도 클릭되지 않아 price2 값이 0이면 함수실행x
+            e.preventDefault();
+            return;
+          }
+          alert("수강신청이 완료되었습니다!");
+        }
 
         return (
-            <div>
-                <form>
-                    <ul>
-                        <BookList
-                            bookItem={bookItems[0]}
-                            price={price}
-                            setPrice={setPrice}
-                            price2={price2}
-                            setPrice2={setPrice2}
-
-                        />
-                        <BookList
-                            bookItem={bookItems[1]}
-                            price={price}
-                            setPrice={setPrice}
-                            price2={price2}
-                            setPrice2={setPrice2}
-                        />
-                        <BookList
-                            bookItem={bookItems[2]}
-                            price={price}
-                            setPrice={setPrice}
-                            price2={price2}
-                            setPrice2={setPrice2}
-                        />
-                    </ul>
-                    <p>총 강의 금액: {`${price + price2}`}원</p>
-                    <button>수강신청</button>
-                </form>
-            </div>
+          <form onSubmit={onSubmitForm}>
+            <ul>
+              <BookList
+                bookItem={bookItems[0]}
+                price={price}
+                setPrice={setPrice}
+                price2={price2}
+                setPrice2={setPrice2}
+                noticeMessage={noticeMessage}
+                setNoticeMessage={setNoticeMessage}
+              />
+              <BookList
+                bookItem={bookItems[1]}
+                price={price}
+                setPrice={setPrice}
+                price2={price2}
+                setPrice2={setPrice2}
+                noticeMessage={noticeMessage}
+                setNoticeMessage={setNoticeMessage}
+              />
+              <BookList
+                bookItem={bookItems[2]}
+                price={price}
+                setPrice={setPrice}
+                price2={price2}
+                setPrice2={setPrice2}
+                noticeMessage={noticeMessage}
+                setNoticeMessage={setNoticeMessage}
+              />
+            </ul>
+            <p>{noticeMessage}</p>
+            <p>총 강의 금액: {`${price + price2}`}원</p>
+            <button>수강신청</button>
+          </form>
         );
-    };
+      };
 
-    const ApplyLect = () => {
+      const ApplyLect = () => {
         return (
-            <div>
-                <Title>수강신청</Title>
-                <BookListForm />
-            </div>
+          <div>
+            <Title>수강신청</Title>
+            <BookListForm />
+          </div>
         );
-    };
+      };
 
-    const Popup = () => {
+      const PopupContent = ({ openPopup }) => {
+        return (
+          <div className="bg">
+            <div className="content">
+              <img
+                src="//gscdn.hackers.co.kr/champ/img/event/2019/07/2200/pc/type3/v1/curri_pop_500_01.jpg"
+                alt=""
+              />
+              <button className="close_btn" onClick={openPopup}>
+                X
+              </button>
+            </div>
+          </div>
+        );
+      };
+
+      const Popup = () => {
         const [popupOn, setPopupOn] = React.useState(false);
 
         const openPopup = () => {
-            setPopupOn(!popupOn);
-        };
-
-        const PopupContent = () => {
-            return (
-                <div className="bg">
-                    <div className="content">
-                        <img
-                            src="//gscdn.hackers.co.kr/champ/img/event/2019/07/2200/pc/type3/v1/curri_pop_500_01.jpg"
-                            alt=""
-                        />
-                        <button className="close_btn" onClick={openPopup}>
-                            X
-                        </button>
-                    </div>
-                </div>
-            );
+          setPopupOn(!popupOn);
         };
 
         return (
-            <div>
-                <Title>팝업</Title>
-                <button onClick={openPopup}>강의 커리큘럼 보기</button>
-                {popupOn ? <PopupContent /> : ""}
-            </div>
+          <div>
+            <Title>팝업</Title>
+            <button onClick={openPopup}>강의 커리큘럼 보기</button>
+            {popupOn ? <PopupContent openPopup={openPopup} /> : ""}
+          </div>
         );
-    };
+      };
 
-    const SomunInput = ({ value, setValue, updateList }) => {
+      const SomunInput = ({ value, setValue, updateList }) => {
         const [noticeMessage, setNoticeMessage] = React.useState("");
         const writeText = (e) => {
-            setValue(e.target.value);
+          setValue(e.target.value);
         };
 
         const submitSomunForm = (e) => {
-            e.preventDefault();
-            if (value === "") {
-                setNoticeMessage("url을 입력해주세요");
-                return;
-            }
-            setValue("");
-            updateList();
+          e.preventDefault();
+          if (value === "") {
+            setNoticeMessage("url을 입력해주세요");
+            return;
+          }
+          setValue("");
+          updateList();
         };
 
         return (
-            <div>
-                <form className="somun_form" onSubmit={submitSomunForm}>
-                    <input
-                        type="text"
-                        placeholder="url을 입력하세요"
-                        onChange={writeText}
-                        value={value}
-                    />
-                    <button>인증하기</button>
-                </form>
-                <p>{noticeMessage}</p>
-            </div>
+          <div>
+            <form className="somun_form" onSubmit={submitSomunForm}>
+              <input
+                type="text"
+                placeholder="url을 입력하세요"
+                onChange={writeText}
+                value={value}
+              />
+              <button>인증하기</button>
+            </form>
+            <p>{noticeMessage}</p>
+          </div>
         );
-    };
+      };
 
-    const SomunList = ({ list }) => {
+      const SomunList = ({ list }) => {
         return (
-            <table>
-                <colgroup>
-                    <col style={{ width: "70%" }} />
-                    <col />
-                </colgroup>
-                <tbody>
-                <tr>
-                    <td>URL</td>
-                    <td>등록일자</td>
+          <table>
+            <colgroup>
+              <col style={{ width: "70%" }} />
+              <col />
+            </colgroup>
+            <tbody>
+              <tr>
+                <td>URL</td>
+                <td>등록일자</td>
+              </tr>
+              {list.map((list, index) => (
+                <tr id={list.id} key={index}>
+                  <td>{list.url}</td>
+                  <td>{list.regDate}</td>
                 </tr>
-                {list.map((list, index) => (
-                    <tr id={list.id} key={index}>
-                        <td>{list.url}</td>
-                        <td>{list.regDate}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+              ))}
+            </tbody>
+          </table>
         );
-    };
+      };
 
-    const SomunEvent = () => {
-        $.ajax({
-            url: "./event-list.json",
-            type: "GET",
-            dataType: "json",
-            success: function(data) {
-                console.log(data)
-            }
-        });
-        // const GET_DATA = "";
-        // const response = fetch(GET_DATA).then((res) => console.log(res));
-        // //const responseJson = await response.json();
-        // console.log(response);
+      const SomunEvent = () => {
+        // const fetchList = async () => {
+        //   const GET_DATA = "./event-list.json";
+        //   const response = await fetch(GET_DATA);
+        //   const data = await response.json();
+        //   return data;
+        //   console.log(data);
+        // };
 
-
+        const GET_DATA = "./event-list.json";
+        const response = fetch(GET_DATA)
+          .then((response) => response.json())
+          .then((data) => {
+            const sssss = data;
+            console.log(sssss);
+          });
 
         const initialList = [
-            {
-                id: "1",
-                url: "https://example.com",
-                regDate: "2022-04-22",
-            },
-            {
-                id: "2",
-                url: "https://example.com",
-                regDate: "2022-04-22",
-            },
-            {
-                id: "3",
-                url: "https://example.com",
-                regDate: "2022-04-22",
-            },
-            {
-                id: "4",
-                url: "https://example.com",
-                regDate: "2022-04-22",
-            },
+          {
+            id: "1",
+            url: "https://example.com",
+            regDate: "2022-04-22",
+          },
+          {
+            id: "2",
+            url: "https://example.com",
+            regDate: "2022-04-22",
+          },
+          {
+            id: "3",
+            url: "https://example.com",
+            regDate: "2022-04-22",
+          },
+          {
+            id: "4",
+            url: "https://example.com",
+            regDate: "2022-04-22",
+          },
         ];
 
         const submitDate =
-            new Date().getMonth() < 9
-                ? new Date().getFullYear().toString() +
-                "-0" +
-                (new Date().getMonth() + 1).toString() +
-                "-" +
-                new Date().getDate().toString()
-                : new Date().getFullYear().toString() +
-                "-" +
-                (new Date().getMonth() + 1).toString() +
-                "-" +
-                new Date().getDate().toString();
+          new Date().getMonth() < 9
+            ? new Date().getFullYear().toString() +
+              "-0" +
+              (new Date().getMonth() + 1).toString() +
+              "-" +
+              new Date().getDate().toString()
+            : new Date().getFullYear().toString() +
+              "-" +
+              (new Date().getMonth() + 1).toString() +
+              "-" +
+              new Date().getDate().toString();
 
         const [list, setList] = React.useState(initialList);
         const [value, setValue] = React.useState("");
@@ -323,35 +340,35 @@
         // }
 
         function updateList() {
-            setList([...list, { url: value, regDate: submitDate }]);
+          setList([...list, { url: value, regDate: submitDate }]);
         }
 
         return (
-            <div>
-                <Title>소문내기 이벤트</Title>
-                <SomunInput
-                    value={value}
-                    setValue={setValue}
-                    updateList={updateList}
-                />
-                <SomunList list={list} />
-            </div>
+          <div>
+            <Title>소문내기 이벤트</Title>
+            <SomunInput
+              value={value}
+              setValue={setValue}
+              updateList={updateList}
+            />
+            <SomunList list={list} />
+          </div>
         );
-    };
+      };
 
-    const App = () => {
+      const App = () => {
         return (
-            <div>
-                <ApplyLect />
-                <Popup />
-                <SomunEvent />
-            </div>
+          <div>
+            <ApplyLect />
+            <Popup />
+            <SomunEvent />
+          </div>
         );
-    };
+      };
 
-    const here = document.querySelector("#app");
+      const here = document.querySelector("#app");
 
-    ReactDOM.render(<App />, here);
-</script>
-</body>
+      ReactDOM.render(<App />, here);
+    </script>
+  </body>
 </html>
