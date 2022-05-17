@@ -41,6 +41,7 @@
         border: 1px solid #999;
       }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
   <body>
     <div id="app"></div>
@@ -279,21 +280,16 @@
       };
 
       const SomunEvent = () => {
-        // const fetchList = async () => {
-        //   const GET_DATA = "./event-list.json";
-        //   const response = await fetch(GET_DATA);
-        //   const data = await response.json();
-        //   return data;
-        //   console.log(data);
-        // };
 
-        const GET_DATA = "./event-list.json";
-        const response = fetch(GET_DATA)
-          .then((response) => response.json())
-          .then((data) => {
-            const sssss = data;
-            console.log(sssss);
-          });
+
+        React.useEffect(()=>{
+          fetch("./event-list.json")
+          .then(res => res.json())
+          .then(data => {
+            setList(data)
+          })
+        },[])
+          
 
         const initialList = [
           {
@@ -331,13 +327,8 @@
               "-" +
               new Date().getDate().toString();
 
-        const [list, setList] = React.useState(initialList);
+        const [list, setList] = React.useState([]);
         const [value, setValue] = React.useState("");
-
-        // async function updateList() {
-        //  const newList = await fetchList();
-        //  setList([...newList, { url: value, regDate: submitDate }]);
-        // }
 
         function updateList() {
           setList([...list, { url: value, regDate: submitDate }]);
