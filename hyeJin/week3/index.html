@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리액트 3주차 스터디</title>
+</head>
+<body>
+    <style>
+    </style>
+
+    <div id="evt_wrap"></div>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script type="text/babel">
+        const Title = (props) => {
+            return (
+                <h3 className="title">{props.children}</h3>
+            )  
+        }
+
+        const Lect = () => {
+            const [total, setTotal] = React.useState(130000); 
+            const BookListItems = [
+                {
+                    id: "book1",
+                    type: "radio",
+                    name: "sel_opt",
+                    price: 20000,
+                    title: "해커스 왕기초"
+                },
+                {
+                    id: "book2",
+                    type: "radio",
+                    name: "sel_opt",
+                    price: 20000,
+                    title: "해커스 첫토익"
+                },
+                {
+                    id: "book3",
+                    type: "checkbox",
+                    price: 20000,
+                    title: "그래머게이트웨이"
+                }
+            ];
+                        
+            const hendleBookListChange = () => {
+                setTotal(130000);
+                
+                const lectInputChecked = document.querySelectorAll('[id^="book"]:checked');
+                lectInputChecked.forEach(function(El) {
+                    setTotal(prev => prev + parseInt(El.dataset.price))
+                })
+            }
+            
+            const hendleSubmit = (e) => {
+                e.preventDefault();
+                alert("수강신청이 완료되었습니다!");
+            }
+            
+            return (
+                <div className="lect">
+                    <form onSubmit={hendleSubmit}>
+                        <ul>
+                            {
+                                BookListItems.map( (book) => (
+                                    <BookList 
+                                        id={book.id} 
+                                        key={book.id} 
+                                        type={book.type} 
+                                        name={book.name} 
+                                        price={book.price} 
+                                        title={book.title} 
+                                        onBookListChange={hendleBookListChange}
+                                    />
+                                ))
+                            }
+                        </ul>
+                        <p className="total">총 강의 금액 : {total}원</p>
+                        <button type="submit">수강신청</button>
+                    </form>
+                </div>
+            )
+        }
+
+        const BookList = (props) => {
+            return (
+                <li>
+                    <label htmlFor={props.id}>
+                        <input 
+                            id={props.id} 
+                            type={props.type} 
+                            name={props.name}
+                            data-price={props.price}
+                            onChange={props.onBookListChange}
+                        />
+                        {props.title} : {props.price}원
+                    </label>
+                </li>
+            )
+        }
+
+        const Curriculum = (props) => {
+            const [showPopup, setShowPopup] = React.useState(false);
+           
+            return (
+                <div>
+                    <button onClick={() => setShowPopup(!showPopup)}>{props.children}</button>
+                    <div className="popup" style={showPopup ? {display:'block'} : {display:'none'} }>
+                        <img src={props.img} alt={props.alt} />    
+                    </div>
+                </div>
+            )
+        }
+
+        const Somun = () => {
+            const [value, setValue] = React.useState("");
+            const [errorMessage, setErrorMessage] = React.useState("");
+
+            const hendleInputChange = (e) => {
+                setValue(e.target.value);
+            }
+
+            const hendleBtnClick = (e) => {
+
+                setErrorMessage("")
+                if(value === "") {
+                    setErrorMessage("url을 입력해주세요");
+                    return;
+                }
+            }
+
+            return (
+                <div className="somun">
+                    <input type="text" onChange={hendleInputChange} />
+                    <button type="submit" onClick={hendleBtnClick}>인증하기</button>
+                    <p style={{color : 'red'}}>{errorMessage}</p>
+                    
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>URL</td>
+                                <td>등록일자</td>
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            )
+        }
+
+        const SomunUrlList = (props) => {
+            return (
+                <tr>
+                    <td>{props.url}</td>
+                    <td>{props.date}</td>
+                </tr>
+            )
+        }
+
+        const App = () => {
+            return (
+                <div>
+                    <Title>수강신청</Title>
+                    <Lect />
+                    <Title>팝업</Title>
+                    <Curriculum
+                        img="https://gscdn.hackers.co.kr/champ/img/event/2019/07/2200/pc/type3/v1/curri_pop_500_01.jpg"
+                        alt="강의 커리큘럼 보기">
+                        강의 커리큘럼 보기
+                    </Curriculum>
+                    <Title>소문내기 이벤트</Title>
+                    <Somun />
+                </div>
+            )
+        }
+
+        const evtWrap = document.querySelector('#evt_wrap');
+        ReactDOM.render(<App/>, evtWrap);
+    </script>
+</body>
+</html>
