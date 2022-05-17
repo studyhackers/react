@@ -6,7 +6,6 @@ JavaScript + XML</br>
 - JavaScript에 HTML태그를 끼얹은 문법
 - HTML 태그 안에선 중괄호({})를 사용해서 JS를 쓸 수 있다.
 
-</br>
 ```js
 const count = 1;
 const title = <h1>{count}번째 고양이</h1>
@@ -23,7 +22,6 @@ const title = <h1>{count}번째 고양이</h1>
 - 브라우저는 JSX를 이해하지 못한다.
 - Babel이라는 통역사로 JSX -> JavaScript
 
-</br>
 ```js
 const title = <h1>안녕</h1> -> const tilte = React.createElement('h1',null,'안녕') 
 ```
