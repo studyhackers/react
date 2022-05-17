@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>°í¾çÀÌ °¡¶ó»ç´ë</title>
+  <title>ê³ ì–‘ì´ ê°€ë¼ì‚¬ëŒ€</title>
 </head>
 <style>
   body{text-align: center;}
@@ -25,43 +25,43 @@
            return JSON.parse(localStorage.getItem(key));
        },
        };
-      console.log("¾ß¿Ë");
+      console.log("ì•¼ì˜¹");
     
-      //·ÎÄÃ ½ºÅä¸®Áö¿¡ µ¥ÀÌÅÍ ½ÌÅ©
-      //localStorage.setItem('±â¼ú', 'react')
-      //localStorage.getItem('±â¼ú')
-      //¸®¾×Æ®
+      //ë¡œì»¬ ìŠ¤í† ë¦¬ì§€ì— ë°ì´í„° ì‹±í¬
+      //localStorage.setItem('ê¸°ìˆ ', 'react')
+      //localStorage.getItem('ê¸°ìˆ ')
+      //ë¦¬ì•¡íŠ¸
       const Tit = (props) => {
           return(
               <h1>{props.children}</h1>
           );
       }
     
-      //component-¹«Á¶°Ç ´ë¹®ÀÚ·Î ½ÃÀÛ // useState
+      //component-ë¬´ì¡°ê±´ ëŒ€ë¬¸ìë¡œ ì‹œì‘ // useState
       const Form = ({updateMainCat}) => {
-       //»óÅÂÃß°¡
-       //¼Ò¹®ÀÚ -> ´ë¹®ÀÚ : .toUpperCase
+       //ìƒíƒœì¶”ê°€
+       //ì†Œë¬¸ì -> ëŒ€ë¬¸ì : .toUpperCase
        const [value, setValue] = React.useState('');
-       const includesHangul = (text) => /[¤¡-¤¾|¤¿-¤Ó|°¡-ÆR]/i.test(text);
+       const includesHangul = (text) => /[ã„±-ã…|ã…-ã…£|ê°€-í£]/i.test(text);
        const [errorMessage, setErrorMessage] = React.useState("");
  
        function handInputChange(e){
            const userValue = e.target.value;
            setErrorMessage("");
            if(includesHangul(userValue)){
-               setErrorMessage("ÇÑ±ÛÀº ÀÔ·ÂÇÒ ¼ö ¾ø½À´Ï´Ù.")
+               setErrorMessage("í•œê¸€ì€ ì…ë ¥í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.")
            };
  
            setValue(userValue.toUpperCase());
        }
  
-       //ºó°ªÀÏ¶§ ¿¡·¯¸Ş¼¼Áö
+       //ë¹ˆê°’ì¼ë•Œ ì—ëŸ¬ë©”ì„¸ì§€
        function handleFormSubmit(e){
            e.preventDefault();
            setErrorMessage("");
  
            if(value === ""){
-               setErrorMessage("ºó°ªÀ¸·Î ¸¸µé ¼ö ¾ø½À´Ï´Ù.");
+               setErrorMessage("ë¹ˆê°’ìœ¼ë¡œ ë§Œë“¤ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
                return;
            }
            updateMainCat();
@@ -69,13 +69,13 @@
  
        return(
            <form onSubmit={handleFormSubmit}>
-               <input type="text" name="name" placeholder="¿µ¾î ´ë»ç¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä" value={value} onChange={handInputChange}/>
-               <button type="submit">»ı¼º</button>
+               <input type="text" name="name" placeholder="ì˜ì–´ ëŒ€ì‚¬ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”" value={value} onChange={handInputChange}/>
+               <button type="submit">ìƒì„±</button>
                <p style={{color:"red"}}>{errorMessage}</p>
            </form>
            );
        };
-      function CatItem(props){ //react¿¡¼­ ÀÎÀÚ¸¦ ³Ñ°ÜÁØ °Í: props
+      function CatItem(props){ //reactì—ì„œ ì¸ìë¥¼ ë„˜ê²¨ì¤€ ê²ƒ: props
           return(
               <li>
                   <img src={props.img} style={{width:"150px"}}/>
@@ -85,17 +85,17 @@
       function Favorites({favorites}){
  
           return(
-              //react¿¡¼­´Â classNameÀÌ¶ó´Â ÇÁ·ÎÆÛÆ¼»ç¿ë
+              //reactì—ì„œëŠ” classNameì´ë¼ëŠ” í”„ë¡œí¼í‹°ì‚¬ìš©
  
               //list
-              //MAP : ÀÚ¹Ù½ºÅ©¸³Æ®¿¡¼­ ¹è¿­À» ¼øÈ¸
-              //ÀÚ¹Ù½ºÅ©¸³Æ®ÀÇ °æ¿ì
-              //["°í¾ç1", "°í¾ç2", "°í¾ç3"].map(cat => cat + "±Í¿©¿ö")
-              //["°í¾ç1±Í¿©¿ö", "°í¾ç2±Í¿©¿ö", "°í¾ç3±Í¿©¿ö"]
+              //MAP : ìë°”ìŠ¤í¬ë¦½íŠ¸ì—ì„œ ë°°ì—´ì„ ìˆœíšŒ
+              //ìë°”ìŠ¤í¬ë¦½íŠ¸ì˜ ê²½ìš°
+              //["ê³ ì–‘1", "ê³ ì–‘2", "ê³ ì–‘3"].map(cat => cat + "ê·€ì—¬ì›Œ")
+              //["ê³ ì–‘1ê·€ì—¬ì›Œ", "ê³ ì–‘2ê·€ì—¬ì›Œ", "ê³ ì–‘3ê·€ì—¬ì›Œ"]
  
-              //¸®¾×Æ®ÀÇ °æ¿ì
-              //["°í¾ç1", "°í¾ç2", "°í¾ç3"].map(cat => <h1>{cat}±Í¿©¿ö</h1>)
-              //['<h1>{cat}±Í¿©¿ö</h1>', '<h1>{cat}±Í¿©¿ö</h1>', '<h1>{cat}±Í¿©¿ö</h1>']
+              //ë¦¬ì•¡íŠ¸ì˜ ê²½ìš°
+              //["ê³ ì–‘1", "ê³ ì–‘2", "ê³ ì–‘3"].map(cat => <h1>{cat}ê·€ì—¬ì›Œ</h1>)
+              //['<h1>{cat}ê·€ì—¬ì›Œ</h1>', '<h1>{cat}ê·€ì—¬ì›Œ</h1>', '<h1>{cat}ê·€ì—¬ì›Œ</h1>']
               <ul className="favorites">
                    {favorites.map((cat) => (
                        <CatItem img={cat} key={cat}/>
@@ -107,51 +107,51 @@
  
           return(
               <div className="main-card">
-                  <img src={img} alt="°í¾çÀÌ" width="400" />
+                  <img src={img} alt="ê³ ì–‘ì´" width="400" />
                   <button onClick={onHeartClick}>?</button>
               </div>
           );
       };
-      //app ÄÄÆ÷³ÍÆ®·Î º¯°æ
+      //app ì»´í¬ë„ŒíŠ¸ë¡œ ë³€ê²½
       const App = () => {
            const CAT1 = "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
            const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
            const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
-           const [counter, setCounter] = React.useState(jsonLocalStorage.getItem("counter"));//string°ªÀÌ ¾Æ´Ñ number°ªÀ¸·Î °¡Á®¿À±â
+           const [counter, setCounter] = React.useState(jsonLocalStorage.getItem("counter"));//stringê°’ì´ ì•„ë‹Œ numberê°’ìœ¼ë¡œ ê°€ì ¸ì˜¤ê¸°
            const [mainCat, setMainCat] = React.useState(CAT1);
-           const [favorites, setFavorites] =React.useState(jsonLocalStorage.getItem("favorites") || []); //ÃÊ±â°ª
+           const [favorites, setFavorites] =React.useState(jsonLocalStorage.getItem("favorites") || []); //ì´ˆê¸°ê°’
  
           function updateMainCat(){
               setMainCat(CAT2);
               const nextCounter = counter + 1;
               setCounter(nextCounter);
               jsonLocalStorage.setItem("counter", nextCounter);
-              //localStorage¿¡¼­´Â value¸¦ ÀúÀåÇÒ ¶§ string°ªÀ¸·Î ÀúÀåµÊ
+              //localStorageì—ì„œëŠ” valueë¥¼ ì €ì¥í•  ë•Œ stringê°’ìœ¼ë¡œ ì €ì¥ë¨
           }
  
-          function handleHeartClick(){ //À§·Î ¿Ã·ÁÁÜ
+          function handleHeartClick(){ //ìœ„ë¡œ ì˜¬ë ¤ì¤Œ
            const nextFavorites = [...favorites, mainCat];
-              setFavorites(nextFavorites); //...favorites :±âÁ¸ favorites¿¡ CAT3¸¦ ´õÇÑ´Ù
+              setFavorites(nextFavorites); //...favorites :ê¸°ì¡´ favoritesì— CAT3ë¥¼ ë”í•œë‹¤
               jsonLocalStorage.setItem("favorites", nextFavorites);
           }
  
            return (
-           //JXS¿¡¼­ º¯¼ö »ç¿ëÇÒ ‹š Áß°ıÈ£{}
-           //ÀÚ½Ä ÄÄÆ÷³ÍÆ® ¾È¿¡¼­ ¾²ÀÌ´ø »óÅÂ¸¦ »óÀ§ ÄÄÆ÷³ÍÆ®¿¡¼­ °°ÀÌ »ç¿ëÇÏ°í ½ÍÀ»¶§ ±× »óÅÂ¸¦ À§·Î ²ø¾î¿Ã¸®°Ô µÊ : »óÅÂ²ø¾î¿Ã¸®±â (lifting state up)
+           //JXSì—ì„œ ë³€ìˆ˜ ì‚¬ìš©í•  ë–„ ì¤‘ê´„í˜¸{}
+           //ìì‹ ì»´í¬ë„ŒíŠ¸ ì•ˆì—ì„œ ì“°ì´ë˜ ìƒíƒœë¥¼ ìƒìœ„ ì»´í¬ë„ŒíŠ¸ì—ì„œ ê°™ì´ ì‚¬ìš©í•˜ê³  ì‹¶ì„ë•Œ ê·¸ ìƒíƒœë¥¼ ìœ„ë¡œ ëŒì–´ì˜¬ë¦¬ê²Œ ë¨ : ìƒíƒœëŒì–´ì˜¬ë¦¬ê¸° (lifting state up)
            <div>
-              <Tit>{counter}¹øÂ° °í¾çÀÌ °¡¶ó»ç´ë</Tit> 
+              <Tit>{counter}ë²ˆì§¸ ê³ ì–‘ì´ ê°€ë¼ì‚¬ëŒ€</Tit> 
               <Form updateMainCat={updateMainCat}/>
               <MainCard img={mainCat} onHeartClick={handleHeartClick}/>
               <Favorites favorites={favorites}/>
           </div>
            );
       };
-      const ¿©±â´Ù°¡±×·Á = document.querySelector('#app');
-      ReactDOM.render(<App />, ¿©±â´Ù°¡±×·Á)
-      //ÀÚ¹Ù½ºÅ©¸²Æ® ¹®¹ıÀ» ¸®¾×Æ® ¾È¿¡¼­ »ç¿ëÇÏ·Á¸é Áß°ıÈ£{} »ç¿ëÇÏ¸éµÊ
-      //Áß°ıÈ£ ¾È¿¡´Â º¯¼ö¸»°íµµ ´Ù¸¥ ÀÚ¹Ù½ºÅ©¸³Æ®µµ »ç¿ë °¡´É : 1+2 = 3
-      //Áß°ıÈ£ ¾È¿¡´Â ¸®¾×Æ®º¯¼ö ¸»°íµµ ´Ù¸¥ º¯¼öµéµµ ´ãÀ» ¼ö ÀÖÀ½ , »ïÇ×¿¬»êÀÚµµ °¡´É, Ç¥Çö½Ä
-      //¸®¾×Æ®¿¡ ±×¸± ¼ö ÀÖ´Â °Ç ÃÖ»óÀ§ ÅÂ±× ÇÏ³ª¿©¾ßÇÔ, µÎ°³ÀÏ ½Ã ¿À·ù --> ÃÖ»óÀ§ ÅÂ±×°¡ ÇÏ³ª°¡ µÇµµ·Ï <div>³ª ´Ù¸¥ ÅÂ±×·Î ¹­¾îÁÖ¸é µÊ
+      const ì—¬ê¸°ë‹¤ê°€ê·¸ë ¤ = document.querySelector('#app');
+      ReactDOM.render(<App />, ì—¬ê¸°ë‹¤ê°€ê·¸ë ¤)
+      //ìë°”ìŠ¤í¬ë¦¼íŠ¸ ë¬¸ë²•ì„ ë¦¬ì•¡íŠ¸ ì•ˆì—ì„œ ì‚¬ìš©í•˜ë ¤ë©´ ì¤‘ê´„í˜¸{} ì‚¬ìš©í•˜ë©´ë¨
+      //ì¤‘ê´„í˜¸ ì•ˆì—ëŠ” ë³€ìˆ˜ë§ê³ ë„ ë‹¤ë¥¸ ìë°”ìŠ¤í¬ë¦½íŠ¸ë„ ì‚¬ìš© ê°€ëŠ¥ : 1+2 = 3
+      //ì¤‘ê´„í˜¸ ì•ˆì—ëŠ” ë¦¬ì•¡íŠ¸ë³€ìˆ˜ ë§ê³ ë„ ë‹¤ë¥¸ ë³€ìˆ˜ë“¤ë„ ë‹´ì„ ìˆ˜ ìˆìŒ , ì‚¼í•­ì—°ì‚°ìë„ ê°€ëŠ¥, í‘œí˜„ì‹
+      //ë¦¬ì•¡íŠ¸ì— ê·¸ë¦´ ìˆ˜ ìˆëŠ” ê±´ ìµœìƒìœ„ íƒœê·¸ í•˜ë‚˜ì—¬ì•¼í•¨, ë‘ê°œì¼ ì‹œ ì˜¤ë¥˜ --> ìµœìƒìœ„ íƒœê·¸ê°€ í•˜ë‚˜ê°€ ë˜ë„ë¡ <div>ë‚˜ ë‹¤ë¥¸ íƒœê·¸ë¡œ ë¬¶ì–´ì£¼ë©´ ë¨
   </script>
 </body>
 </html>

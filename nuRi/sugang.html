@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수강신청</title>
+    <!DOCTYPE html>
+    <html lang="ko">
+</head>
+
+<style>
+    .bg{top:0;left:0; width:100%;height:100%; background:rgba(0,0,0, 0.3);}
+    .popCon{position:fixed; top:50%;left:50%; transform:translate(-50%,-50%);}
+</style>
+<body>
+    <div id="app"></div>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script type="text/babel">
+        const jsonLocalStorage = {
+            setItem: (key, value) => {
+                localStorage.setItem(key, JSON.stringify(value));
+            },
+            getItem: (key) => {
+                return JSON.parse(localStorage.getItem(key));
+            },
+        };
+
+        const eventList = [
+            {
+                "id": "1",
+                "url": "https://example.com",
+                "regDate": "2022-04-22"
+            },
+            {
+                "id": "2",
+                "url": "https://example.com",
+                "regDate": "2022-04-22"
+            },
+            {
+                "id": "3",
+                "url": "https://example.com",
+                "regDate": "2022-04-22"
+            },
+            {
+                "id": "4",
+                "url": "https://example.com",
+                "regDate": "2022-04-22"
+            }
+        ]
+
+        // 팝업
+            const PopForm = ({openPopup}) => {
+                return (
+                    <div className="bg">
+                        <div className="popCon">
+                            <img src="//gscdn.hackers.co.kr/champ/img/event/2019/07/2200/pc/type3/v1/curri_pop_500_01.jpg"alt="이미지"/>
+                        </div>
+                    </div>
+                )
+            }
+
+                const PopOpen = () => { //component-무조건 대문자로 시작
+                    const [popOn, setPopOn] = React.useState(false);
+
+                    const openPopup = () => {
+                    setPopOn(!popOn);
+                    };
+
+                    return (
+                    <div>
+                        <h3>팝업</h3>
+                        <button type="button">강의 커리큘럼 보기</button>
+                    </div>
+                    );
+                };
+
+        //소문내기 이벤트 
+        const EventForm = ({ boardInsert }) => { //component-무조건 대문자로 시작
+            const [contents, setContents] = React.useState('');
+            const [errorMessage, setErrorMesssage] = React.useState('');
+
+            //빈값일때 에러메세지
+            function onDataSave() {
+                setErrorMesssage("");
+
+                if (contents === '') {
+                    setErrorMesssage("url을 입력해주세요.");
+                    return;
+                }
+
+                setValue(contents);
+                boardInsert({ contents });
+            }
+
+            return (
+                <div>
+                    <h3>소문내기 이벤트</h3>
+                    <form>
+                        <input type="text" name="contents" placeholder="url을 입력해주세요." onChange={event => setContents(event.target.value)} value={contents} />
+                        <button type="button" onClick={onDataSave}>인증하기</button>
+                        <p style={{ color: "red" }}>{errorMessage}</p>
+                    </form>
+                </div>
+            );
+        };
+
+        
+        
+        const App = () => {
+
+            const [dataList, setDataList] = React.useState(() => {
+                return jsonLocalStorage.getItem('dataList') || [];
+            });
+
+            function boardInsert({ datas }) {//위로 올려줌
+                const dataLists = [...dataList, datas];
+                setDataList(dataLists); //data 더함
+                jsonLocalStorage.setItem('dataList', dataLists);
+                 //localStorage에서는 value를 저장할 때 string값으로 저장됨
+            }
+
+            return (
+                <div>
+                    <PopOpen></PopOpen>
+                    <EventForm boardInsert={boardInsert}></EventForm>
+                </div>
+            );
+        };
+
+        const 여기다그려 = document.querySelector('#app');
+        ReactDOM.render(<App />, 여기다그려);
+    </script>
+</body>
+
+</html>
