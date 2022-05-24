@@ -1,0 +1,53 @@
+/* layer_box */
+.layer_n {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+}
+.layer_n .bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+.layer .layer_box {
+  position: absolute;
+  top: 50%;
+  left: 50%; /*overflow:hidden;*/
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+/* 기본레이어팝업 */
+.layer_box.ly_type {
+  border: 1px solid #000;
+}
+.layer_box.ly_type h2 {
+  height: 40px;
+  padding-left: 20px;
+  background: #efefef;
+  line-height: 40px;
+  font-size: 14px;
+  color: #000;
+}
+.layer_box.ly_type h2 img {
+  vertical-align: middle;
+}
+.layer_box.ly_type .content {
+  padding: 0 20px;
+  background: #fff;
+}
+.layer_box.ly_type .btn_cls {
+  display: block;
+  position: absolute;
+  top: -20px;
+  right: 0;
+  height: 20px;
+  font-weight: bold;
+}
