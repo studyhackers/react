@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>리액트 스터디 3주차 실습 예제</title>
+</head>
+<style>
+    .layer_bg {background: #000;opacity: 0.5;position: fixed;top: 0;left: 0;width: 100%;height: 100%;display: none;}
+    .layer_pop {position: fixed;z-index: 1000;left: 50%;top: 50%;transform: translate(-50%,-50%);display: none;}
+    .layer_pop img{width: 100%;object-fit: cover;}
+    .layer_close{position: absolute;top: -30px;right: 0;background: none;font-size: 25px;border: 0;color: #fff;cursor: pointer;}
+
+    .table_wrap{border: 1px solid #aaa;width: 300px;text-align: left;}
+    .table_wrap tr{width: inherit;}
+    .table_wrap tr td:nth-child(1){width: 65%;}
+    .table_wrap tr td:nth-child(2){width: 35%;}
+</style>
+<body>
+    <div id="app"></div>
+</body>
+<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script type="text/babel">
+
+    const Checkbox = ({ label, value, onChange }) => {
+        return (
+            <label>
+                <input type="checkbox" checked={value} onChange={onChange} />
+                {label}
+            </label>
+        );
+    };
+
+    const Enrolment = ({}) => {
+        const [errorMessage, setErrorMessage] = React.useState('');
+        const [radioTotal, setRadioTotal] = React.useState(0);
+        const [checkboxTotal, setCheckboxTotal] = React.useState(0);
+        const [ischecked, setIschecked] = React.useState(false);
+        const [checkedRadio, setCheckedRadio] = React.useState([]);
+
+        function onChangeRadio (e) {
+            let radio = e.target.value;
+            setCheckedRadio(radio);
+            if(radio == 1 || radio == 2){
+                setRadioTotal(20000);
+            }
+            setErrorMessage("");
+        };
+        function onChangeCheckbox(e) {
+            // console.log(ischecked);
+            if(checkedRadio==""){
+                setErrorMessage("토익교재 포함 선택 시 그래머 게이트웨이 교재를 선택할 수 있습니다.");
+            }else{
+                setIschecked(!ischecked);
+                if(ischecked==false){
+                    setCheckboxTotal(20000);
+                }else{
+                    setCheckboxTotal(0);
+                }
+            }
+        };
+
+        // console.log("radioTotal="+radioTotal);
+        // console.log("checkboxTotal="+checkboxTotal);
+        // console.log("금액은="+(radioTotal+checkboxTotal));
+
+        function handleEnrolment(e){
+            e.preventDefault();
+            // console.log(checkedRadio);
+            if(checkedRadio==""){
+                setErrorMessage("왕기초 or 첫토익 중 하나를 골라야 수강신청이 가능합니다.");
+            }else{
+                alert("수강신청이 완료되었습니다!");
+            }
+        }
+
+        return (
+            <div className="lecture_wrap" style={{marginBottom:"50px"}}>
+                <h1>수강신청</h1>
+                <p>
+                    <input type="radio" id="lecture1" value="1" checked={checkedRadio === "1"} onChange={onChangeRadio} /><label htmlFor="lecture1">해커스 왕기초 : 20,000원</label>
+                </p>
+                <p>
+                    <input type="radio" id="lecture2" value="2" checked={checkedRadio === "2"} onChange={onChangeRadio} /><label htmlFor="lecture2">해커스 첫토익 : 20,000원</label>
+                </p>
+                <p>
+                    <Checkbox
+                        label="해커스 첫토익 : 20,000원"
+                        value={ischecked}
+                        onChange={onChangeCheckbox}
+                    />
+                </p>
+                <b>총 강의 금액 : {radioTotal+checkboxTotal}원</b>
+                <p style={{color:"red"}}>{errorMessage}</p>
+                <button type="button" onClick={handleEnrolment}>수강신청</button>
+            </div>
+        );
+    }
+
+    const Popup = () => {
+
+        const [viewpop, setViewPop] = React.useState(false);
+        function onView_popUpBox(e) {
+            e.preventDefault();
+            setViewPop(!viewpop);
+        }
+
+        function onClose_popUpBox(e){
+            setViewPop(false);
+        }
+
+        return (
+            <div className="popup_wrap" style={{marginBottom:"50px"}}>
+                <h1>팝업</h1>
+                <button type="button" onClick={onView_popUpBox}>강의 커리큘럼 보기</button>
+                <div className="layer_bg" onClick={onClose_popUpBox} style={{display:viewpop? 'block':'none'}}></div>
+                <div className="layer_pop" style={{display:viewpop? 'block':'none'}}>
+                    <img src="//gscdn.hackers.co.kr/champ/img/event/2019/07/2200/pc/type3/v1/curri_pop_500_01.jpg" alt="" />
+                    <button type="button" className="layer_close" onClick={onClose_popUpBox}>X</button>
+                </div>
+            </div>
+        );
+    }
+
+    const SomunUrl = ({somunData}) => {
+        // console.log(somunData)
+        return (
+            <tr>
+                <td>{somunData.url}</td>
+                <td>{somunData.regDate}</td>
+            </tr>
+        )
+    }
+
+    const Table = ({somunList}) => {
+        // console.log(somunList);
+
+        return (
+            <table className="table_wrap">
+                <thead>
+                    <tr>
+                        <th>URL</th>
+                        <th>등록일자</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {somunList.map((list,idx) => {
+                        return( <SomunUrl somunData={list} key={idx}/> )
+                    })}
+                </tbody>
+            </table>
+        );
+    };
+
+    const Somun = ({}) => {
+        const [errorMessage, setErrorMessage] = React.useState('');
+        const [value, setValue] = React.useState("");
+        const [somunList, setSomunList] = React.useState([]);
+
+        React.useEffect(() => {
+            fetch('./week3.json')
+            .then((response) => response.json())
+            .then((data)  => setSomunList(data))
+        },[])
+
+        function handleInputChange(e) {
+            const userVlaue = e.target.value;
+            // console.log(value);
+            if(userVlaue!=""){
+                setErrorMessage("");
+                setValue(userVlaue);
+            }
+        }
+
+        function handelFormSubmit(e) {
+            e.preventDefault();
+            setErrorMessage("");
+            let now = new Date();
+            let year = now.getFullYear();
+            let month = now.getMonth() + 1;
+            let date = now.getDate();
+            if(date<10) {
+                date='0'+date
+            } 
+            if(month<10) {
+                month='0'+month
+            } 
+            let nowdate = year+"-"+month+"-"+date;
+            let id = Number(somunList.length)+1;
+            // console.log("nowdate="+nowdate);
+
+            if(value == ''){
+                setErrorMessage("url을 입력해주세요.");
+                return;
+            }else{
+                setSomunList([...somunList, { id: id, url: value, regDate: nowdate }]);
+            }
+        }
+
+        console.log(somunList);
+
+        return (
+            <div className="somun_wrap">
+                <h1>소문내기 이벤트</h1>
+                <form onSubmit={handelFormSubmit}>
+                    <input type="text" value={value} onChange={handleInputChange} />
+                    <button>인증하기</button>
+                    <p style={{color:"red"}}>{errorMessage}</p>
+                    <Table somunList={somunList}/>
+                </form>
+            </div>
+        );
+    }
+
+    const fetchTest = async () => {
+        const response = await fetch(`./week3.json`);
+        const responseJson = await response.json();
+        return `${console.log(responseJson)}`;
+    };
+
+    const App = () => {
+        return (
+            <div className="App">
+                <Enrolment />
+                <Popup />
+                <Somun />
+            </div>
+        );
+    }
+
+    const 리액트스터디 = document.querySelector('#app');
+
+    ReactDOM.render(<App />,리액트스터디);
+</script>
+</html>
