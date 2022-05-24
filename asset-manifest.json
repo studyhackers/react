@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/react/jongHwan/static/css/main.092fa5df.css",
-    "main.js": "/react/jongHwan/static/js/main.f25ba53f.js",
-    "static/js/787.58f4677a.chunk.js": "/react/jongHwan/static/js/787.58f4677a.chunk.js",
-    "index.html": "/react/jongHwan/index.html",
-    "main.092fa5df.css.map": "/react/jongHwan/static/css/main.092fa5df.css.map",
-    "main.f25ba53f.js.map": "/react/jongHwan/static/js/main.f25ba53f.js.map",
-    "787.58f4677a.chunk.js.map": "/react/jongHwan/static/js/787.58f4677a.chunk.js.map"
+    "main.css": "/react/static/css/main.092fa5df.css",
+    "main.js": "/react/static/js/main.43837977.js",
+    "static/js/787.58f4677a.chunk.js": "/react/static/js/787.58f4677a.chunk.js",
+    "index.html": "/react/index.html",
+    "main.092fa5df.css.map": "/react/static/css/main.092fa5df.css.map",
+    "main.43837977.js.map": "/react/static/js/main.43837977.js.map",
+    "787.58f4677a.chunk.js.map": "/react/static/js/787.58f4677a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.092fa5df.css",
-    "static/js/main.f25ba53f.js"
+    "static/js/main.43837977.js"
   ]
 }
