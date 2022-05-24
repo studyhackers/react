@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/react/ahnHyang/study-week4/example/static/css/main.b36cd469.css",
-    "main.js": "/react/ahnHyang/study-week4/example/static/js/main.696d9474.js",
-    "static/js/787.58f4677a.chunk.js": "/react/ahnHyang/study-week4/example/static/js/787.58f4677a.chunk.js",
-    "index.html": "/react/ahnHyang/study-week4/example/index.html",
-    "main.b36cd469.css.map": "/react/ahnHyang/study-week4/example/static/css/main.b36cd469.css.map",
-    "main.696d9474.js.map": "/react/ahnHyang/study-week4/example/static/js/main.696d9474.js.map",
-    "787.58f4677a.chunk.js.map": "/react/ahnHyang/study-week4/example/static/js/787.58f4677a.chunk.js.map"
+    "main.css": "/react/static/css/main.b36cd469.css",
+    "main.js": "/react/static/js/main.9d8e88bd.js",
+    "static/js/787.58f4677a.chunk.js": "/react/static/js/787.58f4677a.chunk.js",
+    "index.html": "/react/index.html",
+    "main.b36cd469.css.map": "/react/static/css/main.b36cd469.css.map",
+    "main.9d8e88bd.js.map": "/react/static/js/main.9d8e88bd.js.map",
+    "787.58f4677a.chunk.js.map": "/react/static/js/787.58f4677a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b36cd469.css",
-    "static/js/main.696d9474.js"
+    "static/js/main.9d8e88bd.js"
   ]
 }
